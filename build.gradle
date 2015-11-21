@@ -8,6 +8,7 @@ jar {
 }
 
 ext.junit5Version = '5.0.0-SNAPSHOT'
+ext.springVersion = '4.2.3.RELEASE'
 
 repositories {
 	mavenCentral()
@@ -21,9 +22,14 @@ compileTestJava {
 }
 
 dependencies {
-	testCompile("org.junit.prototype:junit5-api:${junit5Version}")
+	compile("org.springframework:spring-context:${springVersion}")
+	compile("org.springframework:spring-test:${springVersion}")
+	compile("org.junit.prototype:junit5-api:${junit5Version}")
 	testRuntime("org.junit.prototype:junit-console:${junit5Version}")
 	testRuntime("org.junit.prototype:junit5-engine:${junit5Version}")
+
+	// Include JUnit 4 to use JUnit5 Runner within the IDE
+	testCompile("org.junit.prototype:junit4-launcher-runner:${junit5Version}")
 }
 
 configurations.all {
