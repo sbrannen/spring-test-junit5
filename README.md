@@ -5,9 +5,10 @@ can be fully integrated into the current [JUnit 5 Prototype] using a single `Tes
 
 Currently, all that's needed to use the _Spring TestContext Framework_ with JUnit 5
 is to annotate your JUnit 5 based test class with `@ExtendWith(SpringExtension.class)`
-(see [`SpringExtension`]) and whatever Spring annotations you need (i.e., typically at
-least `@ContextConfiguration`). See the source code of [`SpringExtensionTests`] for an
-example.
+and whatever Spring annotations you need (e.g., `@ContextConfiguration`, `@Transactional`,
+`@Sql`, etc.). See [`SpringExtensionTests`] for an example of this extension in action,
+and check out the source code of [`SpringExtension`] if you've interested in the 
+implementation details.
 
 # Running Tests with Gradle
 
