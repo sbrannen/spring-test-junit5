@@ -67,26 +67,25 @@ public class SpringExtension implements BeforeAllCallbacks, AfterAllCallbacks, I
 	}
 
 	@Override
-	public void postProcessTestInstance(TestExecutionContext testExecutionContext) throws Exception {
+	public void postProcessTestInstance(TestExecutionContext testExecutionContext, Object testInstance)
+			throws Exception {
+
 		Class<?> testClass = testExecutionContext.getTestClass().get();
-		Object testInstance = testExecutionContext.getTestInstance().get();
 
 		getTestContextManager(testClass).prepareTestInstance(testInstance);
 	}
 
 	@Override
-	public void preBeforeEach(TestExecutionContext testExecutionContext) throws Exception {
+	public void preBeforeEach(TestExecutionContext testExecutionContext, Object testInstance) throws Exception {
 		Class<?> testClass = testExecutionContext.getTestClass().get();
-		Object testInstance = testExecutionContext.getTestInstance().get();
 		Method testMethod = testExecutionContext.getTestMethod().get();
 
 		getTestContextManager(testClass).beforeTestMethod(testInstance, testMethod);
 	}
 
 	@Override
-	public void postAfterEach(TestExecutionContext testExecutionContext) throws Exception {
+	public void postAfterEach(TestExecutionContext testExecutionContext, Object testInstance) throws Exception {
 		Class<?> testClass = testExecutionContext.getTestClass().get();
-		Object testInstance = testExecutionContext.getTestInstance().get();
 		Method testMethod = testExecutionContext.getTestMethod().get();
 		Throwable testException = testExecutionContext.getTestException().orElse(null);
 
