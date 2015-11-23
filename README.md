@@ -7,7 +7,7 @@ Currently, all that's needed to use the _Spring TestContext Framework_ with JUni
 is to annotate your JUnit 5 based test class with `@ExtendWith(SpringExtension.class)`
 and whatever Spring annotations you need (e.g., `@ContextConfiguration`, `@Transactional`,
 `@Sql`, etc.). See [`SpringExtensionTests`] for an example of this extension in action,
-and check out the source code of [`SpringExtension`] if you've interested in the 
+and check out the source code of [`SpringExtension`] if you're interested in the 
 implementation details.
 
 # Running Tests with Gradle
