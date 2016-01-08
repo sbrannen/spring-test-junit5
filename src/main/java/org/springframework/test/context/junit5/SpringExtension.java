@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2015-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,74 +20,72 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.junit.gen5.api.extension.AfterAllCallbacks;
-import org.junit.gen5.api.extension.AfterEachCallbacks;
-import org.junit.gen5.api.extension.BeforeAllCallbacks;
-import org.junit.gen5.api.extension.BeforeEachCallbacks;
+import org.junit.gen5.api.extension.AfterAllExtensionPoint;
+import org.junit.gen5.api.extension.AfterEachExtensionPoint;
+import org.junit.gen5.api.extension.BeforeAllExtensionPoint;
+import org.junit.gen5.api.extension.BeforeEachExtensionPoint;
+import org.junit.gen5.api.extension.ContainerExtensionContext;
 import org.junit.gen5.api.extension.InstancePostProcessor;
-import org.junit.gen5.api.extension.TestExecutionContext;
 import org.junit.gen5.api.extension.TestExtension;
+import org.junit.gen5.api.extension.TestExtensionContext;
 import org.springframework.test.context.TestContextManager;
 import org.springframework.util.Assert;
 
 /**
  * {@code SpringExtension} demonstrates how the Spring TestContext Framework
- * can be fully integrated into the JUnit 5 prototype using a single
+ * can be fully integrated into the current JUnit 5 snapshots using a single
  * {@link TestExtension}.
  *
  * @author Sam Brannen
  * @since 5.0
  */
-public class SpringExtension implements BeforeAllCallbacks, AfterAllCallbacks, InstancePostProcessor,
-		BeforeEachCallbacks, AfterEachCallbacks {
+public class SpringExtension implements BeforeAllExtensionPoint, AfterAllExtensionPoint, InstancePostProcessor,
+		BeforeEachExtensionPoint, AfterEachExtensionPoint {
 
 	/**
 	 * Cache of {@code TestContextManagers} keyed by test class.
 	 */
-	private final Map<Class<?>, TestContextManager> testContextManagerCache = new ConcurrentHashMap<Class<?>, TestContextManager>(
-		64);
+	private final Map<Class<?>, TestContextManager> tcmCache = new ConcurrentHashMap<Class<?>, TestContextManager>(64);
 
 	@Override
-	public void preBeforeAll(TestExecutionContext testExecutionContext) throws Exception {
-		Class<?> testClass = testExecutionContext.getTestClass().get();
-
+	public void beforeAll(ContainerExtensionContext context) throws Exception {
+		Class<?> testClass = context.getTestClass();
 		getTestContextManager(testClass).beforeTestClass();
 	}
 
 	@Override
-	public void postAfterAll(TestExecutionContext testExecutionContext) throws Exception {
-		Class<?> testClass = testExecutionContext.getTestClass().get();
-
+	public void afterAll(ContainerExtensionContext context) throws Exception {
+		Class<?> testClass = context.getTestClass();
 		try {
 			getTestContextManager(testClass).afterTestClass();
 		}
 		finally {
-			this.testContextManagerCache.remove(testClass);
+			this.tcmCache.remove(testClass);
 		}
 	}
 
 	@Override
-	public void postProcessTestInstance(TestExecutionContext testExecutionContext, Object testInstance)
-			throws Exception {
-
-		Class<?> testClass = testExecutionContext.getTestClass().get();
-
+	public void postProcessTestInstance(TestExtensionContext context) throws Exception {
+		Class<?> testClass = context.getTestClass();
+		Object testInstance = context.getTestInstance();
 		getTestContextManager(testClass).prepareTestInstance(testInstance);
 	}
 
 	@Override
-	public void preBeforeEach(TestExecutionContext testExecutionContext, Object testInstance) throws Exception {
-		Class<?> testClass = testExecutionContext.getTestClass().get();
-		Method testMethod = testExecutionContext.getTestMethod().get();
+	public void beforeEach(TestExtensionContext context) throws Exception {
+		Class<?> testClass = context.getTestClass();
+		Object testInstance = context.getTestInstance();
+		Method testMethod = context.getTestMethod();
 
 		getTestContextManager(testClass).beforeTestMethod(testInstance, testMethod);
 	}
 
 	@Override
-	public void postAfterEach(TestExecutionContext testExecutionContext, Object testInstance) throws Exception {
-		Class<?> testClass = testExecutionContext.getTestClass().get();
-		Method testMethod = testExecutionContext.getTestMethod().get();
-		Throwable testException = testExecutionContext.getTestException().orElse(null);
+	public void afterEach(TestExtensionContext context) throws Exception {
+		Class<?> testClass = context.getTestClass();
+		Object testInstance = context.getTestInstance();
+		Method testMethod = context.getTestMethod();
+		Throwable testException = null; // context.getTestException();
 
 		getTestContextManager(testClass).afterTestMethod(testInstance, testMethod, testException);
 	}
@@ -98,7 +96,7 @@ public class SpringExtension implements BeforeAllCallbacks, AfterAllCallbacks, I
 	 */
 	private TestContextManager getTestContextManager(Class<?> testClass) {
 		Assert.notNull(testClass, "testClass must not be null");
-		return this.testContextManagerCache.computeIfAbsent(testClass, TestContextManager::new);
+		return this.tcmCache.computeIfAbsent(testClass, TestContextManager::new);
 	}
 
 }
