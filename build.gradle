@@ -8,6 +8,7 @@ jar {
 }
 
 ext.junit5Version = '5.0.0-SNAPSHOT'
+ext.log4JVersion  = '2.5'
 ext.springVersion = '4.2.3.RELEASE'
 
 repositories {
@@ -27,21 +28,27 @@ dependencies {
 	compile("org.junit:junit5-api:${junit5Version}")
 	testRuntime("org.junit:junit-console:${junit5Version}")
 	testRuntime("org.junit:junit5-engine:${junit5Version}")
+	testRuntime("org.apache.logging.log4j:log4j-core:${log4JVersion}")
+	testRuntime("org.apache.logging.log4j:log4j-jul:${log4JVersion}")
+	testRuntime("org.apache.logging.log4j:log4j-jcl:${log4JVersion}")
 
 	// Include JUnit 4 to use JUnit5 Runner within the IDE
 	testCompile("org.junit:junit4-runner:${junit5Version}")
 }
 
 configurations.all {
-	// Do NOT cache JUnit 5 snapshot JARs.
-	resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+	// Do NOT cache JUnit 5 snapshot JARs for more than 60 seconds.
+	resolutionStrategy.cacheChangingModulesFor 60, 'seconds'
 }
 
 task junit5(type: JavaExec) {
 	description = 'Runs JUnit 5 tests.'
 	classpath = sourceSets.test.runtimeClasspath
 	main = 'org.junit.gen5.console.ConsoleRunner'
-	args '--enable-exit-code', '--all'
+	args '--enable-exit-code', '--hide-details', '--all'
+
+	// Ensure that log4j2 is properly configured for JUnit 5.
+	systemProperty 'java.util.logging.manager', 'org.apache.logging.log4j.jul.LogManager'
 }
 
 test {
