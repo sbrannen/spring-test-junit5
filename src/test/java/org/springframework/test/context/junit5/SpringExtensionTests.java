@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 the original author or authors.
+ * Copyright 2015-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,8 +28,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
- * Integration tests which demonstrate that the Spring TestContext Framework
- * can be used with the JUnit 5 prototype via a single {@link SpringExtension}.
+ * Integration tests which demonstrate that the Spring TestContext Framework can
+ * be used with the current JUnit 5 snapshots via a single {@link SpringExtension}.
  *
  * @author Sam Brannen
  * @since 5.0
