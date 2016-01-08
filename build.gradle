@@ -9,7 +9,7 @@ jar {
 
 ext.junit5Version = '5.0.0-SNAPSHOT'
 ext.log4JVersion  = '2.5'
-ext.springVersion = '4.2.3.RELEASE'
+ext.springVersion = '4.2.4.RELEASE'
 
 repositories {
 	mavenCentral()
