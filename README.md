@@ -15,18 +15,7 @@ implementation details.
 Executing `gradlew clean test` from the command line should result in output similar to the following.
 
 ```
-Test execution started. Number of static tests: 2
-Started:     Test engine: junit5 [junit5]
-Started:     org.springframework.test.context.junit5.SpringExtensionTests [junit5:org.springframework.test.context.junit5.SpringExtensionTests]
-Started:     applicationContextInjected [junit5:org.springframework.test.context.junit5.SpringExtensionTests#applicationContextInjected()]
-Finished:    applicationContextInjected [junit5:org.springframework.test.context.junit5.SpringExtensionTests#applicationContextInjected()]
-Started:     springBeansInjected [junit5:org.springframework.test.context.junit5.SpringExtensionTests#springBeansInjected()]
-Finished:    springBeansInjected [junit5:org.springframework.test.context.junit5.SpringExtensionTests#springBeansInjected()]
-Finished:    org.springframework.test.context.junit5.SpringExtensionTests [junit5:org.springframework.test.context.junit5.SpringExtensionTests]
-Finished:    Test engine: junit5 [junit5]
-Test execution finished.
-
-Test run finished after 1276 ms
+Test run finished after 712 ms
 [         2 tests found     ]
 [         0 tests skipped   ]
 [         2 tests started   ]
