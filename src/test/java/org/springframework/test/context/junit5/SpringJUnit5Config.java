@@ -24,6 +24,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.junit.gen5.api.extension.ExtendWith;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.test.context.ContextConfiguration;
 
@@ -51,5 +53,20 @@ public @interface SpringJUnit5Config {
 
 	@AliasFor(annotation = ContextConfiguration.class, attribute = "classes")
 	Class<?>[] classes() default {};
+
+	@AliasFor(annotation = ContextConfiguration.class, attribute = "locations")
+	String[] locations() default {};
+
+	@AliasFor(annotation = ContextConfiguration.class, attribute = "initializers")
+	Class<? extends ApplicationContextInitializer<? extends ConfigurableApplicationContext>>[] initializers() default {};
+
+	@AliasFor(annotation = ContextConfiguration.class, attribute = "inheritLocations")
+	boolean inheritLocations() default true;
+
+	@AliasFor(annotation = ContextConfiguration.class, attribute = "inheritInitializers")
+	boolean inheritInitializers() default true;
+
+	@AliasFor(annotation = ContextConfiguration.class, attribute = "name")
+	String name() default "";
 
 }
