@@ -3,12 +3,22 @@
 This project serves as a proof of concept for how the _Spring TestContext Framework_
 can be fully integrated into the current [JUnit 5] snapshots using a single `TestExtension`.
 
+# Using the `SpringExtension`
+
 Currently, all that's needed to use the _Spring TestContext Framework_ with JUnit 5
 is to annotate your JUnit 5 based test class with `@ExtendWith(SpringExtension.class)`
 and whatever Spring annotations you need (e.g., `@ContextConfiguration`, `@Transactional`,
 `@Sql`, etc.). See [`SpringExtensionTests`] for an example of this extension in action,
 and check out the source code of [`SpringExtension`] if you're interested in the 
 implementation details.
+
+## Composing Annotations from Spring & JUnit
+
+Spring has supported [composed annotations] for several years now, and as of JUnit 5
+annotations in JUnit can also be used as meta-annotations. We can therefore create
+custom annotations that are composed from Spring annotations **and** JUnit 5
+annotations. Take a look at [`@SpringJUnit5Config`] for an example, and check out
+[`ComposedSpringExtensionTests`] for an example of `@SpringJUnit5Config` in action.
 
 # Running Tests with Gradle
 
@@ -30,6 +40,9 @@ In order to execute the tests within an IDE, simply run [`SpringExtensionTestSui
 
 
 [JUnit 5]: https://github.com/junit-team/junit-lambda
+[composed annotations]: https://github.com/spring-projects/spring-framework/wiki/Spring-Annotation-Programming-Model#composed-annotations
+[`ComposedSpringExtensionTests`]: https://github.com/sbrannen/spring-test-junit5/blob/master/src/test/java/org/springframework/test/context/junit5/ComposedSpringExtensionTests.java
 [`SpringExtension`]: https://github.com/sbrannen/spring-test-junit5/blob/master/src/main/java/org/springframework/test/context/junit5/SpringExtension.java
 [`SpringExtensionTests`]: https://github.com/sbrannen/spring-test-junit5/blob/master/src/test/java/org/springframework/test/context/junit5/SpringExtensionTests.java
 [`SpringExtensionTestSuite`]: https://github.com/sbrannen/spring-test-junit5/blob/master/src/test/java/org/springframework/test/context/junit5/SpringExtensionTestSuite.java
+[`@SpringJUnit5Config`]: https://github.com/sbrannen/spring-test-junit5/blob/master/src/test/java/org/springframework/test/context/junit5/SpringJUnit5Config.java
