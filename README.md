@@ -15,12 +15,12 @@ implementation details.
 Executing `gradlew clean test` from the command line should result in output similar to the following.
 
 ```
-Test run finished after 712 ms
-[         2 tests found     ]
+Test run finished after 512 ms
+[         4 tests found     ]
 [         0 tests skipped   ]
-[         2 tests started   ]
+[         4 tests started   ]
 [         0 tests aborted   ]
-[         2 tests successful]
+[         4 tests successful]
 [         0 tests failed    ]
 ```
 
