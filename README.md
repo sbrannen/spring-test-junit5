@@ -26,10 +26,10 @@ Test run finished after 712 ms
 
 # Running Tests in the IDE
 
-In order to execute the tests within an IDE, please uncomment
-`// @RunWith(JUnit5.class)` in the [`SpringExtensionTests`] test class.
+In order to execute the tests within an IDE, simply run [`SpringExtensionTestSuite`] as a JUnit 4 test class.
 
 
 [JUnit 5]: https://github.com/junit-team/junit-lambda
 [`SpringExtension`]: https://github.com/sbrannen/spring-test-junit5/blob/master/src/main/java/org/springframework/test/context/junit5/SpringExtension.java
 [`SpringExtensionTests`]: https://github.com/sbrannen/spring-test-junit5/blob/master/src/test/java/org/springframework/test/context/junit5/SpringExtensionTests.java
+[`SpringExtensionTestSuite`]: https://github.com/sbrannen/spring-test-junit5/blob/master/src/test/java/org/springframework/test/context/junit5/SpringExtensionTestSuite.java
