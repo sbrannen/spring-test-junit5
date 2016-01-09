@@ -28,8 +28,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
- * Integration tests which demonstrate that the Spring TestContext Framework can
- * be used with the current JUnit 5 snapshots via a single {@link SpringExtension}.
+ * Integration tests which demonstrate the composability of annotations
+ * from JUnit 5 and the Spring TestContext Framework.
+ *
+ * <p>Note that {@link SpringJUnit5Config @SpringJUnit5Config} is
+ * meta-annotated with JUnit 5's {@link ExtendWith @ExtendWith} <b>and</b>
+ * Spring's {@link ContextConfiguration @ContextConfiguration}.
  *
  * <p>To run these tests in an IDE, simply run {@link SpringExtensionTestSuite}
  * as a JUnit 4 test.
@@ -37,11 +41,11 @@ import org.springframework.test.context.ContextConfiguration;
  * @author Sam Brannen
  * @since 5.0
  * @see SpringExtension
- * @see ComposedSpringExtensionTests
+ * @see SpringJUnit5Config
+ * @see SpringExtensionTests
  */
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = TestConfig.class)
-public class SpringExtensionTests {
+@SpringJUnit5Config(TestConfig.class)
+public class ComposedSpringExtensionTests {
 
 	@Autowired
 	ApplicationContext applicationContext;
