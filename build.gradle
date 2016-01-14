@@ -1,6 +1,16 @@
+buildscript {
+	repositories {
+		maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+	}
+	dependencies {
+		classpath 'org.junit:junit-gradle:5.0.0-SNAPSHOT'
+	}
+}
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
+apply plugin: 'org.junit.gen5.gradle'
 
 jar {
 	baseName = 'spring-test-junit5'
@@ -41,20 +51,10 @@ configurations.all {
 	resolutionStrategy.cacheChangingModulesFor 60, 'seconds'
 }
 
-task junit5(type: JavaExec) {
-	description = 'Runs JUnit 5 tests.'
-	classpath = sourceSets.test.runtimeClasspath
-	main = 'org.junit.gen5.console.ConsoleRunner'
-	args '--enable-exit-code', '--hide-details', '--all'
-
-	// Ensure that log4j2 is properly configured for JUnit 5.
-	systemProperty 'java.util.logging.manager', 'org.apache.logging.log4j.jul.LogManager'
-}
-
-test {
-	description = 'Runs JUnit 4 and JUnit 5 tests.'
-	dependsOn junit5
-	useJUnit()
+junit5 {
+	version "${junit5Version}"
+	matchClassName '.*Tests'
+	logManager 'org.apache.logging.log4j.jul.LogManager'
 }
 
 eclipse {
