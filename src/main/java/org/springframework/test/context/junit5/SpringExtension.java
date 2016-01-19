@@ -25,8 +25,8 @@ import org.junit.gen5.api.extension.AfterEachExtensionPoint;
 import org.junit.gen5.api.extension.BeforeAllExtensionPoint;
 import org.junit.gen5.api.extension.BeforeEachExtensionPoint;
 import org.junit.gen5.api.extension.ContainerExtensionContext;
+import org.junit.gen5.api.extension.Extension;
 import org.junit.gen5.api.extension.InstancePostProcessor;
-import org.junit.gen5.api.extension.TestExtension;
 import org.junit.gen5.api.extension.TestExtensionContext;
 import org.springframework.test.context.TestContextManager;
 import org.springframework.util.Assert;
@@ -34,7 +34,7 @@ import org.springframework.util.Assert;
 /**
  * {@code SpringExtension} demonstrates how the Spring TestContext Framework
  * can be fully integrated into the current JUnit 5 snapshots using a single
- * {@link TestExtension}.
+ * {@link Extension}.
  *
  * @author Sam Brannen
  * @since 5.0

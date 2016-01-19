@@ -1,7 +1,7 @@
 # `spring-test-junit5`
 
 This project serves as a proof of concept for how the _Spring TestContext Framework_
-can be fully integrated into the current [JUnit 5] snapshots using a single `TestExtension`.
+can be fully integrated into the current [JUnit 5] snapshots using a single `Extension`.
 
 # Using the `SpringExtension`
 
