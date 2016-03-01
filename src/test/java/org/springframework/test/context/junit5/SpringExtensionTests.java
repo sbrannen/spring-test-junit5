@@ -42,9 +42,6 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfig.class)
-
-	@Autowired
-	ApplicationContext applicationContext;
 class SpringExtensionTests {
 
 	@Autowired
@@ -54,8 +51,8 @@ class SpringExtensionTests {
 	List<Person> people;
 
 	@Test
-	void applicationContextInjected() {
-		assertNotNull(applicationContext, "ApplicationContext should have been @Autowired by Spring");
+	void applicationContextInjected(ApplicationContext applicationContext) {
+		assertNotNull(applicationContext, "ApplicationContext should have been injected into method by Spring");
 	}
 
 	@Test

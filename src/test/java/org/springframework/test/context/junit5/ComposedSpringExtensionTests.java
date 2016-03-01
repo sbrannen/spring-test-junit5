@@ -46,9 +46,6 @@ import org.springframework.test.context.ContextConfiguration;
  * @see SpringExtensionTests
  */
 @SpringJUnit5Config(TestConfig.class)
-
-	@Autowired
-	ApplicationContext applicationContext;
 class ComposedSpringExtensionTests {
 
 	@Autowired
@@ -58,8 +55,8 @@ class ComposedSpringExtensionTests {
 	List<Person> people;
 
 	@Test
-	void applicationContextInjected() {
-		assertNotNull(applicationContext, "ApplicationContext should have been @Autowired by Spring");
+	void applicationContextInjected(ApplicationContext applicationContext) {
+		assertNotNull(applicationContext, "ApplicationContext should have been injected into method by Spring");
 	}
 
 	@Test
