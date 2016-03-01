@@ -21,6 +21,7 @@ import static org.junit.gen5.api.Assertions.assertNotNull;
 
 import java.util.List;
 
+import org.junit.gen5.api.DisplayName;
 import org.junit.gen5.api.Test;
 import org.junit.gen5.api.extension.ExtendWith;
 
@@ -46,6 +47,7 @@ import org.springframework.test.context.ContextConfiguration;
  * @see SpringExtensionTests
  */
 @SpringJUnit5Config(TestConfig.class)
+@DisplayName("@SpringJUnit5Config Tests")
 class ComposedSpringExtensionTests {
 
 	@Autowired
@@ -55,11 +57,13 @@ class ComposedSpringExtensionTests {
 	List<Person> people;
 
 	@Test
+	@DisplayName("ApplicationContext injected into method")
 	void applicationContextInjected(ApplicationContext applicationContext) {
 		assertNotNull(applicationContext, "ApplicationContext should have been injected into method by Spring");
 	}
 
 	@Test
+	@DisplayName("Spring @Beans injected into fields")
 	void springBeansInjected() {
 		assertNotNull(dilbert, "Person should have been @Autowired by Spring");
 		assertEquals("Dilbert", dilbert.getName(), "Person's name");
