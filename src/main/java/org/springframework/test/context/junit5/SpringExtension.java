@@ -103,7 +103,7 @@ public class SpringExtension implements BeforeAllExtensionPoint, AfterAllExtensi
 	 * Get the {@link TestContextManager} associated with the supplied test class.
 	 * @param testClass the test class to be managed; never {@code null}
 	 */
-	private TestContextManager getTestContextManager(Class<?> testClass) {
+	protected TestContextManager getTestContextManager(Class<?> testClass) {
 		Assert.notNull(testClass, "testClass must not be null");
 		return this.tcmCache.computeIfAbsent(testClass, TestContextManager::new);
 	}
