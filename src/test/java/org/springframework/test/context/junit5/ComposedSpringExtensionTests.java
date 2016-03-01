@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.junit.gen5.api.Test;
 import org.junit.gen5.api.extension.ExtendWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -45,10 +46,10 @@ import org.springframework.test.context.ContextConfiguration;
  * @see SpringExtensionTests
  */
 @SpringJUnit5Config(TestConfig.class)
-public class ComposedSpringExtensionTests {
 
 	@Autowired
 	ApplicationContext applicationContext;
+class ComposedSpringExtensionTests {
 
 	@Autowired
 	Person dilbert;
