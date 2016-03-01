@@ -56,6 +56,7 @@ class SpringExtensionTests {
 	@DisplayName("ApplicationContext injected into method")
 	void applicationContextInjected(ApplicationContext applicationContext) {
 		assertNotNull(applicationContext, "ApplicationContext should have been injected into method by Spring");
+		assertEquals(dilbert, applicationContext.getBean("dilbert", Person.class));
 	}
 
 	@Test
