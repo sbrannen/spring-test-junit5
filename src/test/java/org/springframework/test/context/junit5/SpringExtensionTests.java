@@ -24,9 +24,9 @@ import java.util.List;
 import org.junit.gen5.api.DisplayName;
 import org.junit.gen5.api.Test;
 import org.junit.gen5.api.extension.ExtendWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
@@ -56,6 +56,13 @@ class SpringExtensionTests {
 	@DisplayName("ApplicationContext injected into method")
 	void applicationContextInjected(ApplicationContext applicationContext) {
 		assertNotNull(applicationContext, "ApplicationContext should have been injected into method by Spring");
+		assertEquals(dilbert, applicationContext.getBean("dilbert", Person.class));
+	}
+
+	@Test
+	@DisplayName("ApplicationContext injected into method")
+	void genericApplicationContextInjected(GenericApplicationContext applicationContext) {
+		assertNotNull(applicationContext, "GenericApplicationContext should have been injected into method by Spring");
 		assertEquals(dilbert, applicationContext.getBean("dilbert", Person.class));
 	}
 
