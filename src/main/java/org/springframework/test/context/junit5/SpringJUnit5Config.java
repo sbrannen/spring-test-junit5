@@ -30,15 +30,17 @@ import org.springframework.core.annotation.AliasFor;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
- * Custom annotation that demonstrates the composability of annotations
- * from JUnit 5 and the Spring TestContext Framework.
- *
- * <p>Note that this annotation is meta-annotated with JUnit 5's
- * {@link ExtendWith @ExtendWith} and Spring's
- * {@link ContextConfiguration @ContextConfiguration}.
+ * {@code @SpringJUnit5Config} is a <em>composed annotation</em> that combines
+ * {@link ExtendWith @ExtendWith(SpringExtension.class)} from JUnit 5 with
+ * {@link ContextConfiguration @ContextConfiguration} from the
+ * <em>Spring TestContext Framework</em>.
  *
  * @author Sam Brannen
  * @since 5.0
+ * @see ExtendWith
+ * @see SpringExtension
+ * @see ContextConfiguration
+ * @see org.springframework.test.context.junit5.web.SpringJUnit5WebConfig
  */
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration
@@ -48,24 +50,45 @@ import org.springframework.test.context.ContextConfiguration;
 @Target(ElementType.TYPE)
 public @interface SpringJUnit5Config {
 
+	/**
+	 * Alias for {@link ContextConfiguration#classes}.
+	 */
 	@AliasFor(annotation = ContextConfiguration.class, attribute = "classes")
 	Class<?>[] value() default {};
 
+	/**
+	 * Alias for {@link ContextConfiguration#classes}.
+	 */
 	@AliasFor(annotation = ContextConfiguration.class, attribute = "classes")
 	Class<?>[] classes() default {};
 
+	/**
+	 * Alias for {@link ContextConfiguration#locations}.
+	 */
 	@AliasFor(annotation = ContextConfiguration.class, attribute = "locations")
 	String[] locations() default {};
 
+	/**
+	 * Alias for {@link ContextConfiguration#initializers}.
+	 */
 	@AliasFor(annotation = ContextConfiguration.class, attribute = "initializers")
 	Class<? extends ApplicationContextInitializer<? extends ConfigurableApplicationContext>>[] initializers() default {};
 
+	/**
+	 * Alias for {@link ContextConfiguration#inheritLocations}.
+	 */
 	@AliasFor(annotation = ContextConfiguration.class, attribute = "inheritLocations")
 	boolean inheritLocations() default true;
 
+	/**
+	 * Alias for {@link ContextConfiguration#inheritInitializers}.
+	 */
 	@AliasFor(annotation = ContextConfiguration.class, attribute = "inheritInitializers")
 	boolean inheritInitializers() default true;
 
+	/**
+	 * Alias for {@link ContextConfiguration#name}.
+	 */
 	@AliasFor(annotation = ContextConfiguration.class, attribute = "name")
 	String name() default "";
 

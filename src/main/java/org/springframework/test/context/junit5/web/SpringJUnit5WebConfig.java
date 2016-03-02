@@ -32,16 +32,19 @@ import org.springframework.test.context.junit5.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 /**
- * Custom annotation that demonstrates the composability of annotations
- * from JUnit 5 and the Spring TestContext Framework.
- *
- * <p>Note that this annotation is meta-annotated with JUnit 5's
- * {@link ExtendWith @ExtendWith} as well as Spring's
+ * {@code @SpringJUnit5WebConfig} is a <em>composed annotation</em> that combines
+ * {@link ExtendWith @ExtendWith(SpringExtension.class)} from JUnit 5 with
  * {@link ContextConfiguration @ContextConfiguration} and
- * {@link WebAppConfiguration @WebAppConfiguration}.
+ * {@link WebAppConfiguration @WebAppConfiguration} from the
+ * <em>Spring TestContext Framework</em>.
  *
  * @author Sam Brannen
  * @since 5.0
+ * @see ExtendWith
+ * @see SpringExtension
+ * @see ContextConfiguration
+ * @see WebAppConfiguration
+ * @see org.springframework.test.context.junit5.SpringJUnit5Config
  */
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration
@@ -52,25 +55,52 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @Target(ElementType.TYPE)
 public @interface SpringJUnit5WebConfig {
 
+	/**
+	 * Alias for {@link ContextConfiguration#classes}.
+	 */
 	@AliasFor(annotation = ContextConfiguration.class, attribute = "classes")
 	Class<?>[] value() default {};
 
+	/**
+	 * Alias for {@link ContextConfiguration#classes}.
+	 */
 	@AliasFor(annotation = ContextConfiguration.class, attribute = "classes")
 	Class<?>[] classes() default {};
 
+	/**
+	 * Alias for {@link ContextConfiguration#locations}.
+	 */
 	@AliasFor(annotation = ContextConfiguration.class, attribute = "locations")
 	String[] locations() default {};
 
+	/**
+	 * Alias for {@link ContextConfiguration#initializers}.
+	 */
 	@AliasFor(annotation = ContextConfiguration.class, attribute = "initializers")
 	Class<? extends ApplicationContextInitializer<? extends ConfigurableApplicationContext>>[] initializers() default {};
 
+	/**
+	 * Alias for {@link ContextConfiguration#inheritLocations}.
+	 */
 	@AliasFor(annotation = ContextConfiguration.class, attribute = "inheritLocations")
 	boolean inheritLocations() default true;
 
+	/**
+	 * Alias for {@link ContextConfiguration#inheritInitializers}.
+	 */
 	@AliasFor(annotation = ContextConfiguration.class, attribute = "inheritInitializers")
 	boolean inheritInitializers() default true;
 
+	/**
+	 * Alias for {@link ContextConfiguration#name}.
+	 */
 	@AliasFor(annotation = ContextConfiguration.class, attribute = "name")
 	String name() default "";
+
+	/**
+	 * Alias for {@link WebAppConfiguration#value}.
+	 */
+	@AliasFor(annotation = WebAppConfiguration.class, attribute = "value")
+	String resourcePath() default "src/main/webapp";
 
 }
