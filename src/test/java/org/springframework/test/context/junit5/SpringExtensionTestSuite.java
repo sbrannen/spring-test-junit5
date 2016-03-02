@@ -28,6 +28,7 @@ import org.junit.runner.RunWith;
  * @since 5.0
  * @see SpringExtensionTests
  * @see ComposedSpringExtensionTests
+ * @see org.springframework.test.context.junit5.web.WebSpringExtensionTests
  */
 @RunWith(JUnit5.class)
 @Packages("org.springframework.test.context.junit5")
