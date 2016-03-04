@@ -16,7 +16,6 @@
 
 package org.springframework.test.context.junit5;
 
-import static org.springframework.core.annotation.AnnotationUtils.findAnnotation;
 import static org.springframework.test.util.ReflectionTestUtils.getField;
 
 import java.lang.reflect.Method;
@@ -37,8 +36,6 @@ import org.junit.gen5.api.extension.ParameterResolutionException;
 import org.junit.gen5.api.extension.TestExtensionContext;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.TestContextManager;
 import org.springframework.util.Assert;
@@ -131,11 +128,7 @@ public class SpringExtension implements BeforeAllExtensionPoint, AfterAllExtensi
 	public boolean supports(Parameter parameter, MethodInvocationContext methodInvocationContext,
 			ExtensionContext extensionContext) throws ParameterResolutionException {
 
-		Class<?> testClass = extensionContext.getTestClass();
-
-		return ((findAnnotation(testClass, ContextConfiguration.class) != null
-				|| findAnnotation(testClass, ContextHierarchy.class) != null)
-				&& parameter.getType().isInstance(getApplicationContext(testClass)));
+		return ApplicationContext.class.isAssignableFrom(parameter.getType());
 	}
 
 	/**
