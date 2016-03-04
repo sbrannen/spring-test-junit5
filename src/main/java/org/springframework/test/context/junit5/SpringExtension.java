@@ -159,6 +159,7 @@ public class SpringExtension implements BeforeAllExtensionPoint, AfterAllExtensi
 	 */
 	private ApplicationContext getApplicationContext(Class<?> testClass) {
 		Assert.notNull(testClass, "testClass must not be null");
+		// TODO Remove use of reflection once we upgrade to Spring 4.3 RC1 or higher.
 		TestContext testContext = (TestContext) getField(getTestContextManager(testClass), "testContext");
 		return testContext.getApplicationContext();
 	}
