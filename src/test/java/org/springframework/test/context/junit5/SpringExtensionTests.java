@@ -53,21 +53,21 @@ class SpringExtensionTests {
 	List<Person> people;
 
 	@Test
-	@DisplayName("ApplicationContext injected into method")
+	@DisplayName("💉 ApplicationContext into method")
 	void applicationContextInjected(ApplicationContext applicationContext) {
 		assertNotNull(applicationContext, "ApplicationContext should have been injected into method by Spring");
 		assertEquals(dilbert, applicationContext.getBean("dilbert", Person.class));
 	}
 
 	@Test
-	@DisplayName("ApplicationContext injected into method")
+	@DisplayName("💉 GenericApplicationContext into method")
 	void genericApplicationContextInjected(GenericApplicationContext applicationContext) {
 		assertNotNull(applicationContext, "GenericApplicationContext should have been injected into method by Spring");
 		assertEquals(dilbert, applicationContext.getBean("dilbert", Person.class));
 	}
 
 	@Test
-	@DisplayName("Spring @Beans injected into fields")
+	@DisplayName("💉 Spring @Beans into fields")
 	void springBeansInjected() {
 		assertNotNull(dilbert, "Person should have been @Autowired by Spring");
 		assertEquals("Dilbert", dilbert.getName(), "Person's name");
