@@ -155,17 +155,12 @@ public class SpringExtension implements BeforeAllExtensionPoint, AfterAllExtensi
 	/**
 	 * Get the {@link ApplicationContext} associated with the supplied test class.
 	 * @param testClass the test class whose context should be retrieved; never {@code null}
-	 * @return the application context, or {@code null} if the context could not be retrieved
+	 * @return the application context
 	 */
 	private ApplicationContext getApplicationContext(Class<?> testClass) {
 		Assert.notNull(testClass, "testClass must not be null");
-		try {
-			TestContext testContext = (TestContext) getField(getTestContextManager(testClass), "testContext");
-			return testContext.getApplicationContext();
-		}
-		catch (Exception ex) {
-			return null;
-		}
+		TestContext testContext = (TestContext) getField(getTestContextManager(testClass), "testContext");
+		return testContext.getApplicationContext();
 	}
 
 }
