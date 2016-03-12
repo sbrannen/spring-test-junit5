@@ -16,11 +16,12 @@
 
 package org.springframework.test.context.junit5;
 
-import static org.springframework.test.util.ReflectionTestUtils.getField;
-
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.junit.gen5.api.extension.AfterAllExtensionPoint;
@@ -35,10 +36,23 @@ import org.junit.gen5.api.extension.MethodParameterResolver;
 import org.junit.gen5.api.extension.ParameterResolutionException;
 import org.junit.gen5.api.extension.TestExtensionContext;
 
+import org.springframework.beans.factory.BeanFactoryUtils;
+import org.springframework.beans.factory.ListableBeanFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.BeanFactoryAnnotationUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.beans.factory.config.BeanExpressionContext;
+import org.springframework.beans.factory.config.BeanExpressionResolver;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.TestContextManager;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 /**
  * {@code SpringExtension} integrates the <em>Spring TestContext Framework</em>
@@ -49,9 +63,10 @@ import org.springframework.util.Assert;
  *
  * @author Sam Brannen
  * @since 5.0
- * @see org.springframework.test.context.TestContextManager
+ * @see org.springframework.test.context.junit5.SpringBean
  * @see org.springframework.test.context.junit5.SpringJUnit5Config
  * @see org.springframework.test.context.junit5.web.SpringJUnit5WebConfig
+ * @see org.springframework.test.context.TestContextManager
  */
 public class SpringExtension implements BeforeAllExtensionPoint, AfterAllExtensionPoint, InstancePostProcessor,
 		BeforeEachExtensionPoint, AfterEachExtensionPoint, MethodParameterResolver {
@@ -114,6 +129,7 @@ public class SpringExtension implements BeforeAllExtensionPoint, AfterAllExtensi
 		Class<?> testClass = context.getTestClass();
 		Object testInstance = context.getTestInstance();
 		Method testMethod = context.getTestMethod();
+		// TODO Retrieve exception from TestExtensionContext once supported by JUnit 5.
 		Throwable testException = null; // context.getTestException();
 
 		getTestContextManager(testClass).afterTestMethod(testInstance, testMethod, testException);
@@ -122,23 +138,108 @@ public class SpringExtension implements BeforeAllExtensionPoint, AfterAllExtensi
 	// --- MethodParameterResolver support -------------------------------------
 
 	/**
-	 * Currently only supports injection of the {@link ApplicationContext}.
+	 * Supports method injection for parameters of type {@link ApplicationContext}
+	 * (or a sub-type thereof) and parameters annotated with {@link SpringBean @SpringBean}
+	 * or {@link Value @Value}.
 	 */
 	@Override
 	public boolean supports(Parameter parameter, MethodInvocationContext methodInvocationContext,
 			ExtensionContext extensionContext) throws ParameterResolutionException {
 
-		return ApplicationContext.class.isAssignableFrom(parameter.getType());
+		return requiresApplicationContext(parameter) || findMergedAnnotation(parameter, Autowired.class).isPresent()
+				|| findMergedAnnotation(parameter, Value.class).isPresent();
 	}
 
 	/**
-	 * Currently only supports injection of the {@link ApplicationContext}.
+	 * Resolves values for parameters of type {@link ApplicationContext} (or a
+	 * sub-type thereof) and parameters annotated with {@link SpringBean @SpringBean}
+	 * or {@link Value @Value}.
+	 *
+	 * <p>If an {@code @SpringBean}-annotated parameter is also annotated with
+	 * {@link Qualifier @Qualifier}, {@link Qualifier#value} will be used as the
+	 * <em>qualifier</em> for resolving ambiguities; otherwise,
+	 * {@link Parameter#getName()} will be used as the <em>qualifier</em>. Note
+	 * that {@link SpringBean#value} or {@link SpringBean#qualifier} may be used
+	 * as an alternative to an explicit {@code @Qualifier} declaration.
 	 */
 	@Override
 	public Object resolve(Parameter parameter, MethodInvocationContext methodInvocationContext,
 			ExtensionContext extensionContext) throws ParameterResolutionException {
 
-		return getApplicationContext(extensionContext.getTestClass());
+		ApplicationContext applicationContext = getApplicationContext(extensionContext.getTestClass());
+
+		if (requiresApplicationContext(parameter)) {
+			return applicationContext;
+		}
+
+		AutowireCapableBeanFactory bf = applicationContext.getAutowireCapableBeanFactory();
+
+		Optional<Autowired> autowired = findMergedAnnotation(parameter, Autowired.class);
+		if (autowired.isPresent()) {
+			Class<?> type = parameter.getType();
+
+			// look up single bean by type
+			if (bf instanceof ListableBeanFactory) {
+				Map<String, ?> beans = BeanFactoryUtils.beansOfTypeIncludingAncestors((ListableBeanFactory) bf, type);
+				if (beans.size() == 1) {
+					return beans.values().iterator().next();
+				}
+			}
+
+			// look up by type and qualifier
+			try {
+				String qualifier = resolveQualifier(parameter);
+				return BeanFactoryAnnotationUtils.qualifiedBeanOfType(bf, type, qualifier);
+			}
+			catch (Exception ex) {
+				if (autowired.get().required()) {
+					throw ex;
+				}
+				// else
+				return null;
+			}
+		}
+
+		Optional<Value> value = findMergedAnnotation(parameter, Value.class);
+		if (value.isPresent() && (bf instanceof ConfigurableBeanFactory)) {
+			return resolveValue((ConfigurableBeanFactory) bf, value.get().value(), parameter.getType());
+		}
+
+		// else
+		throw new ParameterResolutionException(String.format("%s failed to resolve parameter [%s] in method [%s]",
+			getClass().getSimpleName(), parameter, methodInvocationContext.getMethod().toGenericString()));
+	}
+
+	private static <A extends Annotation> Optional<A> findMergedAnnotation(AnnotatedElement element,
+			Class<A> annotationType) {
+
+		return Optional.ofNullable(AnnotatedElementUtils.findMergedAnnotation(element, annotationType));
+	}
+
+	private boolean requiresApplicationContext(Parameter parameter) {
+		return ApplicationContext.class.isAssignableFrom(parameter.getType());
+	}
+
+	private String resolveQualifier(Parameter parameter) {
+		// @formatter:off
+		return findMergedAnnotation(parameter, Qualifier.class)
+				.map(Qualifier::value)
+				.filter(StringUtils::hasText)
+				.orElse(parameter.getName());
+		// @formatter:on
+	}
+
+	private Object resolveValue(ConfigurableBeanFactory beanFactory, final String stringValue, Class<?> requiredType) {
+		String resolvedStringValue = beanFactory.resolveEmbeddedValue(stringValue);
+		Object value = resolvedStringValue;
+
+		BeanExpressionResolver expressionResolver = beanFactory.getBeanExpressionResolver();
+		if (expressionResolver != null) {
+			BeanExpressionContext expressionContext = new BeanExpressionContext(beanFactory, null);
+			value = expressionResolver.evaluate(resolvedStringValue, expressionContext);
+		}
+
+		return beanFactory.getTypeConverter().convertIfNecessary(value, requiredType);
 	}
 
 	// -------------------------------------------------------------------------
@@ -159,8 +260,9 @@ public class SpringExtension implements BeforeAllExtensionPoint, AfterAllExtensi
 	 */
 	private ApplicationContext getApplicationContext(Class<?> testClass) {
 		Assert.notNull(testClass, "testClass must not be null");
+		TestContextManager testContextManager = getTestContextManager(testClass);
 		// TODO Remove use of reflection once we upgrade to Spring 4.3 RC1 or higher.
-		TestContext testContext = (TestContext) getField(getTestContextManager(testClass), "testContext");
+		TestContext testContext = (TestContext) ReflectionTestUtils.getField(testContextManager, "testContext");
 		return testContext.getApplicationContext();
 	}
 

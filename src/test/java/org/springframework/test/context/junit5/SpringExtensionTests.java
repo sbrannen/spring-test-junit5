@@ -18,16 +18,22 @@ package org.springframework.test.context.junit5;
 
 import static org.junit.gen5.api.Assertions.assertEquals;
 import static org.junit.gen5.api.Assertions.assertNotNull;
+import static org.junit.gen5.api.Assertions.assertNull;
 
 import java.util.List;
 
-import org.junit.gen5.api.DisplayName;
+import org.junit.gen5.api.Disabled;
 import org.junit.gen5.api.Test;
+import org.junit.gen5.api.TestInfo;
+import org.junit.gen5.api.TestReporter;
 import org.junit.gen5.api.extension.ExtendWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 
 /**
  * Integration tests which demonstrate that the Spring TestContext Framework can
@@ -43,7 +49,7 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfig.class)
-@DisplayName("Basic SpringExtension Tests")
+@TestPropertySource(properties = "enigma = 42")
 class SpringExtensionTests {
 
 	@Autowired
@@ -52,26 +58,104 @@ class SpringExtensionTests {
 	@Autowired
 	List<Person> people;
 
+	@Autowired
+	Dog dog;
+
+	@Value("${enigma}")
+	Integer enigma;
+
 	@Test
-	@DisplayName("💉 ApplicationContext into method")
-	void applicationContextInjected(ApplicationContext applicationContext) {
-		assertNotNull(applicationContext, "ApplicationContext should have been injected into method by Spring");
-		assertEquals(dilbert, applicationContext.getBean("dilbert", Person.class));
+	void applicationContextInjectedIntoMethod(ApplicationContext applicationContext) {
+		assertNotNull(applicationContext, "ApplicationContext should have been injected by Spring");
+		assertEquals(this.dilbert, applicationContext.getBean("dilbert", Person.class));
 	}
 
 	@Test
-	@DisplayName("💉 GenericApplicationContext into method")
-	void genericApplicationContextInjected(GenericApplicationContext applicationContext) {
-		assertNotNull(applicationContext, "GenericApplicationContext should have been injected into method by Spring");
-		assertEquals(dilbert, applicationContext.getBean("dilbert", Person.class));
+	void genericApplicationContextInjectedIntoMethod(GenericApplicationContext applicationContext) {
+		assertNotNull(applicationContext, "GenericApplicationContext should have been injected by Spring");
+		assertEquals(this.dilbert, applicationContext.getBean("dilbert", Person.class));
 	}
 
 	@Test
-	@DisplayName("💉 Spring @Beans into fields")
-	void springBeansInjected() {
-		assertNotNull(dilbert, "Person should have been @Autowired by Spring");
-		assertEquals("Dilbert", dilbert.getName(), "Person's name");
-		assertEquals(2, people.size(), "Number of Person objects in context");
+	void autowiredFields() {
+		assertNotNull(this.dilbert, "Dilbert should have been @Autowired by Spring");
+		assertEquals("Dilbert", this.dilbert.getName(), "Person's name");
+		assertEquals(2, this.people.size(), "Number of Person objects in context");
+
+		assertNotNull(this.dog, "Dogbert should have been @Autowired by Spring");
+		assertEquals("Dogbert", this.dog.getName(), "Dog's name");
+
+		assertNotNull(this.enigma, "Enigma should have been injected via @Value by Spring");
+		assertEquals(new Integer(42), this.enigma, "enigma");
+	}
+
+	@Test
+	void autowiredParameterForSingleBeanOfType(@SpringBean Dog doggy) {
+		assertNotNull(doggy, "Dogbert should have been @Autowired by Spring");
+		assertEquals("Dogbert", doggy.getName(), "Dog's name");
+	}
+
+	@Test
+	void autowiredParameterWithExplicitQualifier(@SpringBean("wally") Person person) {
+		assertNotNull(person, "Wally should have been @Autowired by Spring");
+		assertEquals("Wally", person.getName(), "Person's name");
+	}
+
+	/**
+	 * NOTE: Test code must be compiled with "-parameters" in order for the parameter
+	 * name to be used as the qualifier; otherwise, use {@code @SpringBean("wally")}.
+	 */
+	@Test
+	void autowiredParameterWithQualifierBasedOnParameterName(@SpringBean Person wally) {
+		assertNotNull(wally, "Wally should have been @Autowired by Spring");
+		assertEquals("Wally", wally.getName(), "Person's name");
+	}
+
+	@Test
+	void autowiredParameterThatDoesNotExistButIsNotRequired(@SpringBean(required = false) Number number) {
+		assertNull(number, "Optional number should have been @Autowired as 'null' by Spring");
+	}
+
+	@Test
+	@Disabled("Disabled until JUnit's MethodInvoker properly supports primitive types for parameters")
+	void valueParameterWithPrimitiveType(@Value("99") int num) {
+		assertEquals(99, num);
+	}
+
+	@Test
+	void valueParameterFromPropertyPlaceholder(@Value("${enigma}") Integer enigmaParam) {
+		assertNotNull(enigmaParam, "Enigma should have been injected via @Value by Spring");
+		assertEquals(new Integer(42), enigmaParam, "enigma");
+	}
+
+	@Test
+	void valueParameterFromDefaultValueForPropertyPlaceholder(@Value("${bogus:false}") Boolean defaultValue) {
+		assertNotNull(defaultValue, "Default value should have been injected via @Value by Spring");
+		assertEquals(false, defaultValue, "default value");
+	}
+
+	@Test
+	void valueParameterFromSpelExpression(@Value("#{@dilbert.name}") String name,
+			@Value("#{'Hello ' + ${enigma}}") String hello) {
+
+		assertNotNull(name, "Dilbert's name should have been injected via SpEL expression in @Value by Spring");
+		assertEquals("Dilbert", name, "name from SpEL expression");
+
+		assertNotNull(hello, "hello should have been injected via SpEL expression in @Value by Spring");
+		assertEquals("Hello 42", hello, "hello from SpEL expression");
+	}
+
+	@Test
+	void junitAndSpringMethodInjectionCombined(@SpringBean("wally") Person person, TestInfo testInfo,
+			ApplicationContext context, TestReporter testReporter) {
+
+		// JUnit 5
+		assertNotNull(testInfo, "TestInfo should have been injected by JUnit");
+		assertNotNull(testReporter, "TestReporter should have been injected by JUnit");
+
+		// Spring
+		assertNotNull(context, "ApplicationContext should have been injected by Spring");
+		assertNotNull(person, "Person should have been @Autowired by Spring");
 	}
 
 }

@@ -16,37 +16,21 @@
 
 package org.springframework.test.context.junit5;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-
 /**
- * Demo config for tests.
+ * Demo class for tests.
  *
  * @author Sam Brannen
  * @since 5.0
  */
-@Configuration
-public class TestConfig {
+public class Dog {
 
-	@Bean
-	public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
-		return new PropertySourcesPlaceholderConfigurer();
+	private final String name;
+
+	public Dog(String name) {
+		this.name = name;
 	}
 
-	@Bean
-	public Person dilbert() {
-		return new Person("Dilbert");
+	public String getName() {
+		return this.name;
 	}
-
-	@Bean
-	public Person wally() {
-		return new Person("Wally");
-	}
-
-	@Bean
-	public Dog dogbert() {
-		return new Dog("Dogbert");
-	}
-
 }
