@@ -22,7 +22,6 @@ import static org.junit.gen5.api.Assertions.assertNull;
 
 import java.util.List;
 
-import org.junit.gen5.api.Disabled;
 import org.junit.gen5.api.Test;
 import org.junit.gen5.api.TestInfo;
 import org.junit.gen5.api.TestReporter;
@@ -117,7 +116,6 @@ class SpringExtensionTests {
 	}
 
 	@Test
-	@Disabled("Disabled until JUnit's MethodInvoker properly supports primitive types for parameters")
 	void valueParameterWithPrimitiveType(@Value("99") int num) {
 		assertEquals(99, num);
 	}
