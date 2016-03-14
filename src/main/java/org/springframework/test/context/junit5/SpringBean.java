@@ -17,7 +17,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.annotation.AliasFor;
 
 /**
@@ -25,31 +24,19 @@ import org.springframework.core.annotation.AliasFor;
  * by Spring's dependency injection facilities.
  *
  * <p><strong>WARNING</strong>: {@code @SpringBean} is a <em>temporary solution</em>
- * until {@code @Autowired} is supported on parameters.
+ * until {@link Autowired @Autowired} is supported on parameters.
  *
  * @author Sam Brannen
  * @since 5.0
- * @see Autowired
- * @see Qualifier
+ * @see org.springframework.beans.factory.annotation.Autowired
+ * @see org.springframework.beans.factory.annotation.Qualifier
+ * @see org.springframework.beans.factory.annotation.Value
  */
 @Autowired
-@Qualifier
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface SpringBean {
-
-	/**
-	 * Alias for {@link Qualifier#value}.
-	 */
-	@AliasFor(annotation = Qualifier.class, attribute = "value")
-	String value() default "";
-
-	/**
-	 * Alias for {@link Qualifier#value}.
-	 */
-	@AliasFor(annotation = Qualifier.class, attribute = "value")
-	String qualifier() default "";
 
 	/**
 	 * Alias for {@link Autowired#required}.

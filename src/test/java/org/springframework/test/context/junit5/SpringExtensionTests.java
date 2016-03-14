@@ -17,10 +17,13 @@
 package org.springframework.test.context.junit5;
 
 import static org.junit.gen5.api.Assertions.assertEquals;
+import static org.junit.gen5.api.Assertions.assertFalse;
 import static org.junit.gen5.api.Assertions.assertNotNull;
 import static org.junit.gen5.api.Assertions.assertNull;
+import static org.junit.gen5.api.Assertions.assertTrue;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.gen5.api.Test;
 import org.junit.gen5.api.TestInfo;
@@ -28,6 +31,7 @@ import org.junit.gen5.api.TestReporter;
 import org.junit.gen5.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
@@ -95,14 +99,15 @@ class SpringExtensionTests {
 	}
 
 	@Test
-	void autowiredParameterWithExplicitQualifier(@SpringBean("wally") Person person) {
+	void autowiredParameterWithExplicitQualifier(@Qualifier("wally") Person person) {
 		assertNotNull(person, "Wally should have been @Autowired by Spring");
 		assertEquals("Wally", person.getName(), "Person's name");
 	}
 
 	/**
-	 * NOTE: Test code must be compiled with "-parameters" in order for the parameter
-	 * name to be used as the qualifier; otherwise, use {@code @SpringBean("wally")}.
+	 * NOTE: Test code must be compiled with "-g" (debug symbols) or "-parameters" in order
+	 * for the parameter name to be used as the qualifier; otherwise, use
+	 * {@code @Qualifier("wally")}.
 	 */
 	@Test
 	void autowiredParameterWithQualifierBasedOnParameterName(@SpringBean Person wally) {
@@ -111,8 +116,27 @@ class SpringExtensionTests {
 	}
 
 	@Test
+	void autowiredParameterAsJavaUtilOptional(@SpringBean Optional<Dog> dog) {
+		assertNotNull(dog, "Optional dog should have been @Autowired by Spring");
+		assertTrue(dog.isPresent(), "Value of Optional should be 'present'");
+		assertEquals("Dogbert", dog.get().getName(), "Dog's name");
+	}
+
+	@Test
+	void autowiredParameterThatDoesNotExistAsJavaUtilOptional(@SpringBean Optional<Number> number) {
+		assertNotNull(number, "Optional number should have been @Autowired by Spring");
+		assertFalse(number.isPresent(), "Value of Optional number should not be 'present'");
+	}
+
+	@Test
 	void autowiredParameterThatDoesNotExistButIsNotRequired(@SpringBean(required = false) Number number) {
-		assertNull(number, "Optional number should have been @Autowired as 'null' by Spring");
+		assertNull(number, "Non-required number should have been @Autowired as 'null' by Spring");
+	}
+
+	@Test
+	void autowiredParameterOfList(@SpringBean List<Person> peopleParam) {
+		assertNotNull(peopleParam, "list of persons should have been @Autowired by Spring");
+		assertEquals(2, peopleParam.size(), "Number of Person objects in context");
 	}
 
 	@Test
@@ -144,7 +168,7 @@ class SpringExtensionTests {
 	}
 
 	@Test
-	void junitAndSpringMethodInjectionCombined(@SpringBean("wally") Person person, TestInfo testInfo,
+	void junitAndSpringMethodInjectionCombined(@Qualifier("wally") Person person, TestInfo testInfo,
 			ApplicationContext context, TestReporter testReporter) {
 
 		// JUnit 5

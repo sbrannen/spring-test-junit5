@@ -18,6 +18,8 @@ package org.springframework.test.context.junit5;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Map;
@@ -36,23 +38,19 @@ import org.junit.gen5.api.extension.MethodParameterResolver;
 import org.junit.gen5.api.extension.ParameterResolutionException;
 import org.junit.gen5.api.extension.TestExtensionContext;
 
-import org.springframework.beans.factory.BeanFactoryUtils;
-import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.BeanFactoryAnnotationUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.beans.factory.config.BeanExpressionContext;
-import org.springframework.beans.factory.config.BeanExpressionResolver;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
+import org.springframework.core.annotation.SynthesizingMethodParameter;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.TestContextManager;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 /**
  * {@code SpringExtension} integrates the <em>Spring TestContext Framework</em>
@@ -135,111 +133,49 @@ public class SpringExtension implements BeforeAllExtensionPoint, AfterAllExtensi
 		getTestContextManager(testClass).afterTestMethod(testInstance, testMethod, testException);
 	}
 
-	// --- MethodParameterResolver support -------------------------------------
-
 	/**
-	 * Supports method injection for parameters of type {@link ApplicationContext}
-	 * (or a sub-type thereof) and parameters annotated with {@link SpringBean @SpringBean}
-	 * or {@link Value @Value}.
+	 * Supports method parameter injection for parameters of type {@link ApplicationContext}
+	 * (or a sub-type thereof) and parameters annotated with {@link SpringBean @SpringBean},
+	 * {@link Qualifier @Qualifier}, or {@link Value @Value}.
+	 *
+	 * @see #resolve
 	 */
 	@Override
 	public boolean supports(Parameter parameter, MethodInvocationContext methodInvocationContext,
 			ExtensionContext extensionContext) throws ParameterResolutionException {
 
-		return requiresApplicationContext(parameter) || findMergedAnnotation(parameter, Autowired.class).isPresent()
+		return ApplicationContext.class.isAssignableFrom(parameter.getType())
+				|| findMergedAnnotation(parameter, Autowired.class).isPresent()
+				|| findMergedAnnotation(parameter, Qualifier.class).isPresent()
 				|| findMergedAnnotation(parameter, Value.class).isPresent();
 	}
 
 	/**
-	 * Resolves values for parameters of type {@link ApplicationContext} (or a
-	 * sub-type thereof) and parameters annotated with {@link SpringBean @SpringBean}
-	 * or {@link Value @Value}.
+	 * Resolves the value of the supplied parameter by retrieving the corresponding
+	 * dependency from the test's {@link ApplicationContext}.
 	 *
-	 * <p>If an {@code @SpringBean}-annotated parameter is also annotated with
-	 * {@link Qualifier @Qualifier}, {@link Qualifier#value} will be used as the
-	 * <em>qualifier</em> for resolving ambiguities; otherwise,
-	 * {@link Parameter#getName()} will be used as the <em>qualifier</em>. Note
-	 * that {@link SpringBean#value} or {@link SpringBean#qualifier} may be used
-	 * as an alternative to an explicit {@code @Qualifier} declaration.
+	 * <p>Provides comprehensive autowiring support for individual method parameters
+	 * on par with Spring's dependency injection facilities for autowired fields and
+	 * methods, including support for {@link Qualifier @Qualifier} and {@link Value @Value}
+	 * with support for property placeholders and SpEL expressions in {@code @Value}
+	 * declarations.
+	 *
+	 * <p>If the parameter is annotated with {@code @Qualifier}, {@link Qualifier#value}
+	 * will be used as the <em>qualifier</em> for resolving ambiguities; otherwise, the
+	 * name of the parameter will be used as the <em>qualifier</em>.
+	 *
+	 * @see #supports
+	 * @see AutowireCapableBeanFactory#resolveDependency(DependencyDescriptor, String)
 	 */
 	@Override
 	public Object resolve(Parameter parameter, MethodInvocationContext methodInvocationContext,
 			ExtensionContext extensionContext) throws ParameterResolutionException {
 
+		boolean required = findMergedAnnotation(parameter, Autowired.class).map(Autowired::required).orElse(true);
+		MethodParameter methodParameter = createMethodParameter(parameter);
+		DependencyDescriptor descriptor = new DependencyDescriptor(methodParameter, required);
 		ApplicationContext applicationContext = getApplicationContext(extensionContext.getTestClass());
-
-		if (requiresApplicationContext(parameter)) {
-			return applicationContext;
-		}
-
-		AutowireCapableBeanFactory bf = applicationContext.getAutowireCapableBeanFactory();
-
-		Optional<Autowired> autowired = findMergedAnnotation(parameter, Autowired.class);
-		if (autowired.isPresent()) {
-			Class<?> type = parameter.getType();
-
-			// look up single bean by type
-			if (bf instanceof ListableBeanFactory) {
-				Map<String, ?> beans = BeanFactoryUtils.beansOfTypeIncludingAncestors((ListableBeanFactory) bf, type);
-				if (beans.size() == 1) {
-					return beans.values().iterator().next();
-				}
-			}
-
-			// look up by type and qualifier
-			try {
-				String qualifier = resolveQualifier(parameter);
-				return BeanFactoryAnnotationUtils.qualifiedBeanOfType(bf, type, qualifier);
-			}
-			catch (Exception ex) {
-				if (autowired.get().required()) {
-					throw ex;
-				}
-				// else
-				return null;
-			}
-		}
-
-		Optional<Value> value = findMergedAnnotation(parameter, Value.class);
-		if (value.isPresent() && (bf instanceof ConfigurableBeanFactory)) {
-			return resolveValue((ConfigurableBeanFactory) bf, value.get().value(), parameter.getType());
-		}
-
-		// else
-		throw new ParameterResolutionException(String.format("%s failed to resolve parameter [%s] in method [%s]",
-			getClass().getSimpleName(), parameter, methodInvocationContext.getMethod().toGenericString()));
-	}
-
-	private static <A extends Annotation> Optional<A> findMergedAnnotation(AnnotatedElement element,
-			Class<A> annotationType) {
-
-		return Optional.ofNullable(AnnotatedElementUtils.findMergedAnnotation(element, annotationType));
-	}
-
-	private boolean requiresApplicationContext(Parameter parameter) {
-		return ApplicationContext.class.isAssignableFrom(parameter.getType());
-	}
-
-	private String resolveQualifier(Parameter parameter) {
-		// @formatter:off
-		return findMergedAnnotation(parameter, Qualifier.class)
-				.map(Qualifier::value)
-				.filter(StringUtils::hasText)
-				.orElse(parameter.getName());
-		// @formatter:on
-	}
-
-	private Object resolveValue(ConfigurableBeanFactory beanFactory, final String stringValue, Class<?> requiredType) {
-		String resolvedStringValue = beanFactory.resolveEmbeddedValue(stringValue);
-		Object value = resolvedStringValue;
-
-		BeanExpressionResolver expressionResolver = beanFactory.getBeanExpressionResolver();
-		if (expressionResolver != null) {
-			BeanExpressionContext expressionContext = new BeanExpressionContext(beanFactory, null);
-			value = expressionResolver.evaluate(resolvedStringValue, expressionContext);
-		}
-
-		return beanFactory.getTypeConverter().convertIfNecessary(value, requiredType);
+		return applicationContext.getAutowireCapableBeanFactory().resolveDependency(descriptor, null);
 	}
 
 	// -------------------------------------------------------------------------
@@ -264,6 +200,35 @@ public class SpringExtension implements BeforeAllExtensionPoint, AfterAllExtensi
 		// TODO Remove use of reflection once we upgrade to Spring 4.3 RC1 or higher.
 		TestContext testContext = (TestContext) ReflectionTestUtils.getField(testContextManager, "testContext");
 		return testContext.getApplicationContext();
+	}
+
+	private static <A extends Annotation> Optional<A> findMergedAnnotation(AnnotatedElement element,
+			Class<A> annotationType) {
+
+		return Optional.ofNullable(AnnotatedElementUtils.findMergedAnnotation(element, annotationType));
+	}
+
+	private static MethodParameter createMethodParameter(Parameter parameter) {
+		Assert.notNull(parameter, "Parameter must not be null");
+		Executable executable = parameter.getDeclaringExecutable();
+		if (executable instanceof Method) {
+			return new SynthesizingMethodParameter((Method) executable, getIndex(parameter));
+		}
+		// else
+		return new MethodParameter((Constructor<?>) executable, getIndex(parameter));
+	}
+
+	private static int getIndex(Parameter parameter) {
+		Assert.notNull(parameter, "Parameter must not be null");
+		Executable executable = parameter.getDeclaringExecutable();
+		Parameter[] parameters = executable.getParameters();
+		for (int i = 0; i < parameters.length; i++) {
+			if (parameters[i] == parameter) {
+				return i;
+			}
+		}
+		throw new IllegalStateException(String.format("Failed to resolve index of parameter [%s] in executable [%s]",
+			parameter, executable.toGenericString()));
 	}
 
 }
