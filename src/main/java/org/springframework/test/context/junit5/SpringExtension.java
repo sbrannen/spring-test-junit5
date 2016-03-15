@@ -174,6 +174,7 @@ public class SpringExtension implements BeforeAllExtensionPoint, AfterAllExtensi
 		boolean required = findMergedAnnotation(parameter, Autowired.class).map(Autowired::required).orElse(true);
 		MethodParameter methodParameter = createMethodParameter(parameter);
 		DependencyDescriptor descriptor = new DependencyDescriptor(methodParameter, required);
+		descriptor.setContainingClass(extensionContext.getTestClass());
 		ApplicationContext applicationContext = getApplicationContext(extensionContext.getTestClass());
 		return applicationContext.getAutowireCapableBeanFactory().resolveDependency(descriptor, null);
 	}

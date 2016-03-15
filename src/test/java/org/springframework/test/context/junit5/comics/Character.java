@@ -22,10 +22,15 @@ package org.springframework.test.context.junit5.comics;
  * @author Sam Brannen
  * @since 5.0
  */
-public class Person extends Character {
+public abstract class Character {
 
-	public Person(String name) {
-		super(name);
+	private final String name;
+
+	Character(String name) {
+		this.name = name;
 	}
 
+	public String getName() {
+		return this.name;
+	}
 }

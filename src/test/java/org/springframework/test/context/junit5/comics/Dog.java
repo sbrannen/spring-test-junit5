@@ -22,15 +22,10 @@ package org.springframework.test.context.junit5.comics;
  * @author Sam Brannen
  * @since 5.0
  */
-public class Dog {
-
-	private final String name;
+public class Dog extends Character {
 
 	public Dog(String name) {
-		this.name = name;
+		super(name);
 	}
 
-	public String getName() {
-		return this.name;
-	}
 }
