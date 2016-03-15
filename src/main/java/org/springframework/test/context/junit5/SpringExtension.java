@@ -16,8 +16,6 @@
 
 package org.springframework.test.context.junit5;
 
-import static org.springframework.test.context.junit5.support.MethodParameterFactory.createSynthesizingMethodParameter;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
@@ -48,6 +46,7 @@ import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.TestContextManager;
+import org.springframework.test.context.junit5.support.MethodParameterFactory;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.Assert;
 
@@ -114,7 +113,6 @@ public class SpringExtension implements BeforeAllExtensionPoint, AfterAllExtensi
 		Class<?> testClass = context.getTestClass();
 		Object testInstance = context.getTestInstance();
 		Method testMethod = context.getTestMethod();
-
 		getTestContextManager(testClass).beforeTestMethod(testInstance, testMethod);
 	}
 
@@ -128,7 +126,6 @@ public class SpringExtension implements BeforeAllExtensionPoint, AfterAllExtensi
 		Method testMethod = context.getTestMethod();
 		// TODO Retrieve exception from TestExtensionContext once supported by JUnit 5.
 		Throwable testException = null; // context.getTestException();
-
 		getTestContextManager(testClass).afterTestMethod(testInstance, testMethod, testException);
 	}
 
@@ -171,7 +168,7 @@ public class SpringExtension implements BeforeAllExtensionPoint, AfterAllExtensi
 			ExtensionContext extensionContext) throws ParameterResolutionException {
 
 		boolean required = findMergedAnnotation(parameter, Autowired.class).map(Autowired::required).orElse(true);
-		MethodParameter methodParameter = createSynthesizingMethodParameter(parameter);
+		MethodParameter methodParameter = MethodParameterFactory.createSynthesizingMethodParameter(parameter);
 		DependencyDescriptor descriptor = new DependencyDescriptor(methodParameter, required);
 		descriptor.setContainingClass(extensionContext.getTestClass());
 		ApplicationContext applicationContext = getApplicationContext(extensionContext.getTestClass());
