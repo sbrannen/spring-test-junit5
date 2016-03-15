@@ -16,10 +16,10 @@
 
 package org.springframework.test.context.junit5;
 
+import static org.springframework.test.context.junit5.support.MethodParameterFactory.createSynthesizingMethodParameter;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Map;
@@ -46,7 +46,6 @@ import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
-import org.springframework.core.annotation.SynthesizingMethodParameter;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.TestContextManager;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -172,7 +171,7 @@ public class SpringExtension implements BeforeAllExtensionPoint, AfterAllExtensi
 			ExtensionContext extensionContext) throws ParameterResolutionException {
 
 		boolean required = findMergedAnnotation(parameter, Autowired.class).map(Autowired::required).orElse(true);
-		MethodParameter methodParameter = createMethodParameter(parameter);
+		MethodParameter methodParameter = createSynthesizingMethodParameter(parameter);
 		DependencyDescriptor descriptor = new DependencyDescriptor(methodParameter, required);
 		descriptor.setContainingClass(extensionContext.getTestClass());
 		ApplicationContext applicationContext = getApplicationContext(extensionContext.getTestClass());
@@ -207,29 +206,6 @@ public class SpringExtension implements BeforeAllExtensionPoint, AfterAllExtensi
 			Class<A> annotationType) {
 
 		return Optional.ofNullable(AnnotatedElementUtils.findMergedAnnotation(element, annotationType));
-	}
-
-	private static MethodParameter createMethodParameter(Parameter parameter) {
-		Assert.notNull(parameter, "Parameter must not be null");
-		Executable executable = parameter.getDeclaringExecutable();
-		if (executable instanceof Method) {
-			return new SynthesizingMethodParameter((Method) executable, getIndex(parameter));
-		}
-		// else
-		return new MethodParameter((Constructor<?>) executable, getIndex(parameter));
-	}
-
-	private static int getIndex(Parameter parameter) {
-		Assert.notNull(parameter, "Parameter must not be null");
-		Executable executable = parameter.getDeclaringExecutable();
-		Parameter[] parameters = executable.getParameters();
-		for (int i = 0; i < parameters.length; i++) {
-			if (parameters[i] == parameter) {
-				return i;
-			}
-		}
-		throw new IllegalStateException(String.format("Failed to resolve index of parameter [%s] in executable [%s]",
-			parameter, executable.toGenericString()));
 	}
 
 }
