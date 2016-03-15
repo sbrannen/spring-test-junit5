@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.test.context.junit5;
+package org.springframework.test.context.junit5.comics;
 
 /**
  * Demo class for tests.
@@ -22,11 +22,11 @@ package org.springframework.test.context.junit5;
  * @author Sam Brannen
  * @since 5.0
  */
-public class Dog {
+public class Cat {
 
 	private final String name;
 
-	public Dog(String name) {
+	public Cat(String name) {
 		this.name = name;
 	}
 

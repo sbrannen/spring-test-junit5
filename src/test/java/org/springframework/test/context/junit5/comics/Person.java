@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package org.springframework.test.context.junit5.web;
-
-import org.springframework.test.context.junit5.comics.Person;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+package org.springframework.test.context.junit5.comics;
 
 /**
+ * Demo class for tests.
+ *
  * @author Sam Brannen
  * @since 5.0
  */
-@RestController
-class PersonController {
+public class Person {
 
-	@RequestMapping("/person/{id}")
-	public Person getPerson(@PathVariable long id) {
-		return new Person("Dilbert");
+	private final String name;
+
+	public Person(String name) {
+		this.name = name;
 	}
 
+	public String getName() {
+		return this.name;
+	}
 }
