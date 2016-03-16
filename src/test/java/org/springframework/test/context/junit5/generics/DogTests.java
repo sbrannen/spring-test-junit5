@@ -16,7 +16,6 @@
 
 package org.springframework.test.context.junit5.generics;
 
-import org.junit.gen5.api.extension.ExtendWith;
 import org.springframework.test.context.junit5.SpringExtension;
 import org.springframework.test.context.junit5.comics.Dog;
 
@@ -28,8 +27,6 @@ import org.springframework.test.context.junit5.comics.Dog;
  * @author Sam Brannen
  * @since 5.0
  */
-// TODO Determine why we have to redeclare @ExtendWith(SpringExtension.class).
-@ExtendWith(SpringExtension.class)
 class DogTests extends GenericComicCharactersTests<Dog> {
 
 	@Override
