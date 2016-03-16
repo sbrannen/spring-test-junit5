@@ -65,6 +65,14 @@ junit5 {
 	version "${junit5Version}"
 	matchClassName '.*Tests'
 	logManager 'org.apache.logging.log4j.jul.LogManager'
+	runJunit4 false
+}
+
+test {
+	// Ensure that Gradle does not run our tests with JUnit 4, since
+	// the JUnit 4 based test suite would then execute all JUnit 5
+	// tests a second time.
+	exclude '**/**'
 }
 
 task wrapper(type: Wrapper) {
