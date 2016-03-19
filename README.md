@@ -92,7 +92,7 @@ In order to execute the tests within an IDE, simply run [`SpringExtensionTestSui
 [SPR-13575]: https://jira.spring.io/browse/SPR-13575
 [Spring Framework]: http://projects.spring.io/spring-framework/
 [Spring TestContext Framework]: http://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/#testcontext-framework
-[`@SpringJUnit5Config`]: https://github.com/sbrannen/spring-test-junit5/blob/master/src/test/java/org/springframework/test/context/junit5/SpringJUnit5Config.java
+[`@SpringJUnit5Config`]: https://github.com/sbrannen/spring-test-junit5/blob/master/src/main/java/org/springframework/test/context/junit5/SpringJUnit5Config.java
 [`ComposedSpringExtensionTests`]: https://github.com/sbrannen/spring-test-junit5/blob/master/src/test/java/org/springframework/test/context/junit5/ComposedSpringExtensionTests.java
 [`SpringExtensionTestSuite`]: https://github.com/sbrannen/spring-test-junit5/blob/master/src/test/java/org/springframework/test/context/junit5/SpringExtensionTestSuite.java
 [`SpringExtensionTests`]: https://github.com/sbrannen/spring-test-junit5/blob/master/src/test/java/org/springframework/test/context/junit5/SpringExtensionTests.java
