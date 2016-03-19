@@ -10,6 +10,7 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
+apply plugin: 'maven'
 apply plugin: 'org.junit.gen5.gradle'
 
 jar {
@@ -17,23 +18,20 @@ jar {
 	version = '1.0.0-SNAPSHOT'
 }
 
+group = 'org.springframework.test'
+
 ext.hamcrestVersion   = '1.3'
 ext.jacksonVersion    = '2.7.0'
 ext.jsonpathVersion   = '2.1.0'
 ext.junit5Version     = '5.0.0-SNAPSHOT'
 ext.log4JVersion      = '2.5'
 ext.servletApiVersion = '3.1.0'
-ext.springVersion     = '4.2.5.RELEASE'
+ext.springVersion     = '4.3.0.BUILD-SNAPSHOT'
 
 repositories {
 	mavenCentral()
 	maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-}
-
-compileTestJava {
-	sourceCompatibility = 1.8
-	targetCompatibility = 1.8
-	options.compilerArgs += '-parameters'
+	maven { url 'https://repo.spring.io/libs-snapshot' }
 }
 
 dependencies {
@@ -56,9 +54,15 @@ dependencies {
 	testCompile("org.junit:junit4-runner:${junit5Version}")
 }
 
-configurations.all {
-	// Do NOT cache JUnit 5 snapshot JARs for more than 60 seconds.
-	resolutionStrategy.cacheChangingModulesFor 60, 'seconds'
+compileJava {
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
+}
+
+compileTestJava {
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
+	options.compilerArgs += '-parameters'
 }
 
 junit5 {
@@ -73,6 +77,33 @@ test {
 	// the JUnit 4 based test suite would then execute all JUnit 5
 	// tests a second time.
 	exclude '**/**'
+}
+
+javadoc {
+	options.memberLevel = org.gradle.external.javadoc.JavadocMemberLevel.PROTECTED
+	options.author = true
+	options.header = project.name
+	options.addStringOption('Xdoclint:none', '-quiet')
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+	classifier = 'sources'
+	from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar) {
+	classifier = 'javadoc'
+	from javadoc
+}
+
+artifacts {
+	archives sourcesJar
+	archives javadocJar
+}
+
+configurations.all {
+	// Do NOT cache snapshot JARs for more than 60 seconds.
+	resolutionStrategy.cacheChangingModulesFor 60, 'seconds'
 }
 
 task wrapper(type: Wrapper) {

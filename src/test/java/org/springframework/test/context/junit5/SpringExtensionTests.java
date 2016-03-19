@@ -106,13 +106,13 @@ class SpringExtensionTests {
 	}
 
 	@Test
-	void autowiredParameterByTypeForSingleBean(@SpringBean Dog dog) {
+	void autowiredParameterByTypeForSingleBean(@Autowired Dog dog) {
 		assertNotNull(dog, "Dogbert should have been @Autowired by Spring");
 		assertEquals("Dogbert", dog.getName(), "Dog's name");
 	}
 
 	@Test
-	void autowiredParameterByTypeForPrimaryBean(@SpringBean Cat primaryCat) {
+	void autowiredParameterByTypeForPrimaryBean(@Autowired Cat primaryCat) {
 		assertNotNull(primaryCat, "Primary cat should have been @Autowired by Spring");
 		assertEquals("Catbert", primaryCat.getName(), "Primary cat's name");
 	}
@@ -129,31 +129,31 @@ class SpringExtensionTests {
 	 * {@code @Qualifier("wally")}.
 	 */
 	@Test
-	void autowiredParameterWithImplicitQualifierBasedOnParameterName(@SpringBean Person wally) {
+	void autowiredParameterWithImplicitQualifierBasedOnParameterName(@Autowired Person wally) {
 		assertNotNull(wally, "Wally should have been @Autowired by Spring");
 		assertEquals("Wally", wally.getName(), "Person's name");
 	}
 
 	@Test
-	void autowiredParameterAsJavaUtilOptional(@SpringBean Optional<Dog> dog) {
+	void autowiredParameterAsJavaUtilOptional(@Autowired Optional<Dog> dog) {
 		assertNotNull(dog, "Optional dog should have been @Autowired by Spring");
 		assertTrue(dog.isPresent(), "Value of Optional should be 'present'");
 		assertEquals("Dogbert", dog.get().getName(), "Dog's name");
 	}
 
 	@Test
-	void autowiredParameterThatDoesNotExistAsJavaUtilOptional(@SpringBean Optional<Number> number) {
+	void autowiredParameterThatDoesNotExistAsJavaUtilOptional(@Autowired Optional<Number> number) {
 		assertNotNull(number, "Optional number should have been @Autowired by Spring");
 		assertFalse(number.isPresent(), "Value of Optional number should not be 'present'");
 	}
 
 	@Test
-	void autowiredParameterThatDoesNotExistButIsNotRequired(@SpringBean(required = false) Number number) {
+	void autowiredParameterThatDoesNotExistButIsNotRequired(@Autowired(required = false) Number number) {
 		assertNull(number, "Non-required number should have been @Autowired as 'null' by Spring");
 	}
 
 	@Test
-	void autowiredParameterOfList(@SpringBean List<Person> peopleParam) {
+	void autowiredParameterOfList(@Autowired List<Person> peopleParam) {
 		assertNotNull(peopleParam, "list of people should have been @Autowired by Spring");
 		assertEquals(2, peopleParam.size(), "Number of people in context");
 	}
@@ -188,7 +188,7 @@ class SpringExtensionTests {
 	}
 
 	@Test
-	void junitAndSpringMethodInjectionCombined(@SpringBean Cat kittyCat, TestInfo testInfo, ApplicationContext context,
+	void junitAndSpringMethodInjectionCombined(@Autowired Cat kittyCat, TestInfo testInfo, ApplicationContext context,
 			TestReporter testReporter) {
 
 		assertNotNull(testInfo, "TestInfo should have been injected by JUnit");

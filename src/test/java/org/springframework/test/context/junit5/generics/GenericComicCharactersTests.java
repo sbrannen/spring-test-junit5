@@ -23,16 +23,16 @@ import java.util.List;
 
 import org.junit.gen5.api.Test;
 import org.junit.gen5.api.extension.ExtendWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit5.SpringBean;
 import org.springframework.test.context.junit5.SpringExtension;
 import org.springframework.test.context.junit5.TestConfig;
 import org.springframework.test.context.junit5.comics.Character;
 
 /**
  * Abstract base class for integration tests that demonstrate support for
- * Java generics in JUnit 5 test classes when used with the the Spring
+ * Java generics in JUnit 5 test classes when used with the Spring
  * TestContext Framework and the {@link SpringExtension}.
  *
  * @author Sam Brannen
@@ -56,13 +56,13 @@ abstract class GenericComicCharactersTests<T extends Character> {
 	}
 
 	@Test
-	void autowiredParameterByTypeForSingleGenericBean(@SpringBean T character) {
+	void autowiredParameterByTypeForSingleGenericBean(@Autowired T character) {
 		assertNotNull(character, "Character should have been @Autowired by Spring");
 		assertEquals(getExpectedName(), character.getName(), "character's name");
 	}
 
-	protected abstract int getExpectedNumCharacters();
+	abstract int getExpectedNumCharacters();
 
-	protected abstract String getExpectedName();
+	abstract String getExpectedName();
 
 }

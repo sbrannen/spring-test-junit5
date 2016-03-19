@@ -47,7 +47,6 @@ import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.TestContextManager;
 import org.springframework.test.context.junit5.support.MethodParameterFactory;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.Assert;
 
 /**
@@ -59,7 +58,6 @@ import org.springframework.util.Assert;
  *
  * @author Sam Brannen
  * @since 5.0
- * @see org.springframework.test.context.junit5.SpringBean
  * @see org.springframework.test.context.junit5.SpringJUnit5Config
  * @see org.springframework.test.context.junit5.web.SpringJUnit5WebConfig
  * @see org.springframework.test.context.TestContextManager
@@ -131,7 +129,7 @@ public class SpringExtension implements BeforeAllExtensionPoint, AfterAllExtensi
 
 	/**
 	 * Supports method parameter injection for parameters of type {@link ApplicationContext}
-	 * (or a sub-type thereof) and parameters annotated with {@link SpringBean @SpringBean},
+	 * (or a sub-type thereof) and parameters annotated with {@link Autowired @Autowired},
 	 * {@link Qualifier @Qualifier}, or {@link Value @Value}.
 	 *
 	 * @see #resolve
@@ -152,13 +150,12 @@ public class SpringExtension implements BeforeAllExtensionPoint, AfterAllExtensi
 	 *
 	 * <p>Provides comprehensive autowiring support for individual method parameters
 	 * on par with Spring's dependency injection facilities for autowired fields and
-	 * methods, including support for {@link Qualifier @Qualifier} and {@link Value @Value}
-	 * with support for property placeholders and SpEL expressions in {@code @Value}
-	 * declarations.
+	 * methods, including support for {@link Autowired @Autowired},
+	 * {@link Qualifier @Qualifier}, and {@link Value @Value} with support for property
+	 * placeholders and SpEL expressions in {@code @Value} declarations.
 	 *
-	 * <p>If the parameter is annotated with {@code @Qualifier}, {@link Qualifier#value}
-	 * will be used as the <em>qualifier</em> for resolving ambiguities; otherwise, the
-	 * name of the parameter will be used as the <em>qualifier</em>.
+	 * <p>If an explicit <em>qualifier</em> is not declared, the name of the parameter
+	 * will be used as the <em>qualifier</em> for resolving ambiguities.
 	 *
 	 * @see #supports
 	 * @see AutowireCapableBeanFactory#resolveDependency(DependencyDescriptor, String)
@@ -167,12 +164,16 @@ public class SpringExtension implements BeforeAllExtensionPoint, AfterAllExtensi
 	public Object resolve(Parameter parameter, MethodInvocationContext methodInvocationContext,
 			ExtensionContext extensionContext) throws ParameterResolutionException {
 
+		Class<?> testClass = extensionContext.getTestClass();
+
 		boolean required = findMergedAnnotation(parameter, Autowired.class).map(Autowired::required).orElse(true);
 		MethodParameter methodParameter = MethodParameterFactory.createSynthesizingMethodParameter(parameter);
 		DependencyDescriptor descriptor = new DependencyDescriptor(methodParameter, required);
-		descriptor.setContainingClass(extensionContext.getTestClass());
-		ApplicationContext applicationContext = getApplicationContext(extensionContext.getTestClass());
-		return applicationContext.getAutowireCapableBeanFactory().resolveDependency(descriptor, null);
+		descriptor.setContainingClass(testClass);
+
+		ApplicationContext applicationContext = getApplicationContext(testClass);
+		AutowireCapableBeanFactory beanFactory = applicationContext.getAutowireCapableBeanFactory();
+		return beanFactory.resolveDependency(descriptor, null);
 	}
 
 	// -------------------------------------------------------------------------
@@ -180,6 +181,7 @@ public class SpringExtension implements BeforeAllExtensionPoint, AfterAllExtensi
 	/**
 	 * Get the {@link TestContextManager} associated with the supplied test class.
 	 * @param testClass the test class to be managed; never {@code null}
+	 * @return the {@code TestContextManager}; never {@code null}
 	 */
 	private TestContextManager getTestContextManager(Class<?> testClass) {
 		Assert.notNull(testClass, "testClass must not be null");
@@ -190,13 +192,13 @@ public class SpringExtension implements BeforeAllExtensionPoint, AfterAllExtensi
 	 * Get the {@link ApplicationContext} associated with the supplied test class.
 	 * @param testClass the test class whose context should be retrieved; never {@code null}
 	 * @return the application context
+	 * @throws IllegalStateException if an error occurs while retrieving the
+	 * application context
+	 * @see TestContext#getApplicationContext()
 	 */
 	private ApplicationContext getApplicationContext(Class<?> testClass) {
 		Assert.notNull(testClass, "testClass must not be null");
-		TestContextManager testContextManager = getTestContextManager(testClass);
-		// TODO Remove use of reflection once we upgrade to Spring 4.3 RC1 or higher.
-		TestContext testContext = (TestContext) ReflectionTestUtils.getField(testContextManager, "testContext");
-		return testContext.getApplicationContext();
+		return getTestContextManager(testClass).getTestContext().getApplicationContext();
 	}
 
 	private static <A extends Annotation> Optional<A> findMergedAnnotation(AnnotatedElement element,
