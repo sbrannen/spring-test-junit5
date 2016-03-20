@@ -16,12 +16,9 @@
 
 package org.springframework.test.context.junit5;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.junit.gen5.api.extension.AfterAllExtensionPoint;
@@ -36,17 +33,9 @@ import org.junit.gen5.api.extension.MethodParameterResolver;
 import org.junit.gen5.api.extension.ParameterResolutionException;
 import org.junit.gen5.api.extension.TestExtensionContext;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.MethodParameter;
-import org.springframework.core.annotation.AnnotatedElementUtils;
-import org.springframework.test.context.TestContext;
 import org.springframework.test.context.TestContextManager;
-import org.springframework.test.context.junit5.support.MethodParameterFactory;
+import org.springframework.test.context.junit5.support.ParameterAutowireUtils;
 import org.springframework.util.Assert;
 
 /**
@@ -128,52 +117,33 @@ public class SpringExtension implements BeforeAllExtensionPoint, AfterAllExtensi
 	}
 
 	/**
-	 * Supports method parameter injection for parameters of type {@link ApplicationContext}
-	 * (or a sub-type thereof) and parameters annotated with {@link Autowired @Autowired},
-	 * {@link Qualifier @Qualifier}, or {@link Value @Value}.
-	 *
+	 * Determine if the value for the supplied {@link Parameter} should be autowired
+	 * from the test's {@link ApplicationContext}.
+	 * <p>Delegates to {@link ParameterAutowireUtils#isAutowirable}.
 	 * @see #resolve
+	 * @see ParameterAutowireUtils#isAutowirable
 	 */
 	@Override
 	public boolean supports(Parameter parameter, MethodInvocationContext methodInvocationContext,
 			ExtensionContext extensionContext) throws ParameterResolutionException {
 
-		return ApplicationContext.class.isAssignableFrom(parameter.getType())
-				|| findMergedAnnotation(parameter, Autowired.class).isPresent()
-				|| findMergedAnnotation(parameter, Qualifier.class).isPresent()
-				|| findMergedAnnotation(parameter, Value.class).isPresent();
+		return ParameterAutowireUtils.isAutowirable(parameter);
 	}
 
 	/**
-	 * Resolves the value of the supplied parameter by retrieving the corresponding
-	 * dependency from the test's {@link ApplicationContext}.
-	 *
-	 * <p>Provides comprehensive autowiring support for individual method parameters
-	 * on par with Spring's dependency injection facilities for autowired fields and
-	 * methods, including support for {@link Autowired @Autowired},
-	 * {@link Qualifier @Qualifier}, and {@link Value @Value} with support for property
-	 * placeholders and SpEL expressions in {@code @Value} declarations.
-	 *
-	 * <p>If an explicit <em>qualifier</em> is not declared, the name of the parameter
-	 * will be used as the <em>qualifier</em> for resolving ambiguities.
-	 *
+	 * Resolve a value for the supplied {@link Parameter} by retrieving the
+	 * corresponding dependency from the test's {@link ApplicationContext}.
+	 * <p>Delegates to {@link ParameterAutowireUtils#resolveDependency}.
 	 * @see #supports
-	 * @see AutowireCapableBeanFactory#resolveDependency(DependencyDescriptor, String)
+	 * @see ParameterAutowireUtils#resolveDependency
 	 */
 	@Override
 	public Object resolve(Parameter parameter, MethodInvocationContext methodInvocationContext,
 			ExtensionContext extensionContext) throws ParameterResolutionException {
 
 		Class<?> testClass = extensionContext.getTestClass();
-
-		boolean required = findMergedAnnotation(parameter, Autowired.class).map(Autowired::required).orElse(true);
-		MethodParameter methodParameter = MethodParameterFactory.createSynthesizingMethodParameter(parameter);
-		DependencyDescriptor descriptor = new DependencyDescriptor(methodParameter, required);
-		descriptor.setContainingClass(testClass);
-
 		ApplicationContext applicationContext = getApplicationContext(testClass);
-		AutowireCapableBeanFactory beanFactory = applicationContext.getAutowireCapableBeanFactory();
-		return beanFactory.resolveDependency(descriptor, null);
+		return ParameterAutowireUtils.resolveDependency(parameter, testClass, applicationContext);
 	}
 
 	// -------------------------------------------------------------------------
@@ -194,17 +164,11 @@ public class SpringExtension implements BeforeAllExtensionPoint, AfterAllExtensi
 	 * @return the application context
 	 * @throws IllegalStateException if an error occurs while retrieving the
 	 * application context
-	 * @see TestContext#getApplicationContext()
+	 * @see org.springframework.test.context.TestContext#getApplicationContext()
 	 */
 	private ApplicationContext getApplicationContext(Class<?> testClass) {
 		Assert.notNull(testClass, "testClass must not be null");
 		return getTestContextManager(testClass).getTestContext().getApplicationContext();
-	}
-
-	private static <A extends Annotation> Optional<A> findMergedAnnotation(AnnotatedElement element,
-			Class<A> annotationType) {
-
-		return Optional.ofNullable(AnnotatedElementUtils.findMergedAnnotation(element, annotationType));
 	}
 
 }

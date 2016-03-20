@@ -31,13 +31,26 @@ import org.springframework.util.Assert;
  *
  * @author Sam Brannen
  * @since 5.0
+ * @see ParameterAutowireUtils
  * @see MethodParameter
  * @see SynthesizingMethodParameter
  * @see #createMethodParameter(Parameter)
  * @see #createSynthesizingMethodParameter(Parameter)
  */
-public class MethodParameterFactory {
+public abstract class MethodParameterFactory {
 
+	private MethodParameterFactory() {
+		/* no-op */
+	}
+
+	/**
+	 * Create a standard {@link MethodParameter} from the supplied {@link Parameter}.
+	 * <p>Supports parameters declared in methods and constructors.
+	 * @param parameter the parameter to create a {@code MethodParameter} for;
+	 * never {@code null}
+	 * @return a new {@code MethodParameter}
+	 * @see #createSynthesizingMethodParameter(Parameter)
+	 */
 	public static MethodParameter createMethodParameter(Parameter parameter) {
 		Assert.notNull(parameter, "Parameter must not be null");
 		Executable executable = parameter.getDeclaringExecutable();
@@ -48,6 +61,16 @@ public class MethodParameterFactory {
 		return new MethodParameter((Constructor<?>) executable, getIndex(parameter));
 	}
 
+	/**
+	 * Create a {@link SynthesizingMethodParameter} from the supplied {@link Parameter}.
+	 * <p>Supports parameters declared in methods.
+	 * @param parameter the parameter to create a {@code SynthesizingMethodParameter}
+	 * for; never {@code null}
+	 * @return a new {@code SynthesizingMethodParameter}
+	 * @throws UnsupportedOperationException if the supplied parameter is declared
+	 * in a constructor
+	 * @see #createMethodParameter(Parameter)
+	 */
 	public static SynthesizingMethodParameter createSynthesizingMethodParameter(Parameter parameter) {
 		Assert.notNull(parameter, "Parameter must not be null");
 		Executable executable = parameter.getDeclaringExecutable();
