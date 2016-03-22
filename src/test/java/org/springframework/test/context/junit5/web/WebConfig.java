@@ -29,7 +29,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 class WebConfig {
 
 	@Bean
-	public PersonController personController() {
+	PersonController personController() {
 		return new PersonController();
 	}
 

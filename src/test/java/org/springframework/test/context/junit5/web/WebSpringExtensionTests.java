@@ -49,6 +49,7 @@ import org.springframework.web.context.WebApplicationContext;
  * @since 5.0
  * @see SpringExtension
  * @see SpringJUnit5WebConfig
+ * @see org.springframework.test.context.junit5.web.MultipleWebRequestsSpringExtensionTests
  * @see org.springframework.test.context.junit5.SpringExtensionTests
  * @see org.springframework.test.context.junit5.ComposedSpringExtensionTests
  */

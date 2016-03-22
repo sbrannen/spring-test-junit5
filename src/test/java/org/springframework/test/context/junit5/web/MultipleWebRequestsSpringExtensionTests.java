@@ -56,7 +56,7 @@ class MultipleWebRequestsSpringExtensionTests {
 	void setUpMockMvc(WebApplicationContext wac) {
 		this.mockMvc = webAppContextSetup(wac)
 			.alwaysExpect(status().isOk())
-			.alwaysExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))//
+			.alwaysExpect(content().contentTypeCompatibleWith(APPLICATION_JSON))
 			.build();
 	}
 
