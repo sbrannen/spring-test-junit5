@@ -30,7 +30,10 @@ class PersonController {
 
 	@RequestMapping("/person/{id}")
 	public Person getPerson(@PathVariable long id) {
-		return new Person("Dilbert");
+		if (id == 42) {
+			return new Person("Dilbert");
+		}
+		return new Person("Wally");
 	}
 
 }
