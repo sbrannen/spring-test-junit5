@@ -31,6 +31,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 
+import static org.springframework.core.annotation.AnnotatedElementUtils.hasAnnotation;
+
 /**
  * Collection of utilities related to autowiring of individual method parameters.
  *
@@ -57,9 +59,9 @@ public abstract class ParameterAutowireUtils {
 	 */
 	public static boolean isAutowirable(Parameter parameter) {
 		return ApplicationContext.class.isAssignableFrom(parameter.getType())
-				|| findMergedAnnotation(parameter, Autowired.class).isPresent()
-				|| findMergedAnnotation(parameter, Qualifier.class).isPresent()
-				|| findMergedAnnotation(parameter, Value.class).isPresent();
+				|| hasAnnotation(parameter, Autowired.class)
+				|| hasAnnotation(parameter, Qualifier.class)
+				|| hasAnnotation(parameter, Value.class);
 	}
 
 	/**

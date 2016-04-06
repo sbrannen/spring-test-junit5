@@ -64,37 +64,37 @@ public @interface SpringJUnit5WebConfig {
 	/**
 	 * Alias for {@link ContextConfiguration#classes}.
 	 */
-	@AliasFor(annotation = ContextConfiguration.class, attribute = "classes")
+	@AliasFor(annotation = ContextConfiguration.class)
 	Class<?>[] classes() default {};
 
 	/**
 	 * Alias for {@link ContextConfiguration#locations}.
 	 */
-	@AliasFor(annotation = ContextConfiguration.class, attribute = "locations")
+	@AliasFor(annotation = ContextConfiguration.class)
 	String[] locations() default {};
 
 	/**
 	 * Alias for {@link ContextConfiguration#initializers}.
 	 */
-	@AliasFor(annotation = ContextConfiguration.class, attribute = "initializers")
+	@AliasFor(annotation = ContextConfiguration.class)
 	Class<? extends ApplicationContextInitializer<? extends ConfigurableApplicationContext>>[] initializers() default {};
 
 	/**
 	 * Alias for {@link ContextConfiguration#inheritLocations}.
 	 */
-	@AliasFor(annotation = ContextConfiguration.class, attribute = "inheritLocations")
+	@AliasFor(annotation = ContextConfiguration.class)
 	boolean inheritLocations() default true;
 
 	/**
 	 * Alias for {@link ContextConfiguration#inheritInitializers}.
 	 */
-	@AliasFor(annotation = ContextConfiguration.class, attribute = "inheritInitializers")
+	@AliasFor(annotation = ContextConfiguration.class)
 	boolean inheritInitializers() default true;
 
 	/**
 	 * Alias for {@link ContextConfiguration#name}.
 	 */
-	@AliasFor(annotation = ContextConfiguration.class, attribute = "name")
+	@AliasFor(annotation = ContextConfiguration.class)
 	String name() default "";
 
 	/**
