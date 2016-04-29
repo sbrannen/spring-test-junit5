@@ -53,8 +53,8 @@ interface GenericComicCharactersDefaultInterfaceMethodsTests<C extends Character
 		assertEquals(getExpectedName(), character.getName(), "character's name");
 	}
 
-	abstract int getExpectedNumCharacters();
+	int getExpectedNumCharacters();
 
-	abstract String getExpectedName();
+	String getExpectedName();
 
 }

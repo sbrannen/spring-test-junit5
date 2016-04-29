@@ -16,8 +16,6 @@
 
 package org.springframework.test.context.junit5.defaultmethods;
 
-import org.junit.gen5.api.extension.ExtendWith;
-
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit5.SpringExtension;
 import org.springframework.test.context.junit5.TestConfig;
@@ -26,14 +24,12 @@ import org.springframework.test.context.junit5.comics.Dog;
 /**
  * Parameterized test class for integration tests that demonstrate support for
  * default interface methods and Java generics in JUnit 5 test classes when used
- * with the the Spring TestContext Framework and the {@link SpringExtension}.
+ * with the Spring TestContext Framework and the {@link SpringExtension}.
  *
  * @author Sam Brannen
  * @since 5.0
  */
-// TODO Delete @ExtendWith once JUnit supports it on interfaces
-@ExtendWith(SpringExtension.class)
-// TODO Delete @ContextConfiguration once Spring supports it on interfaces
+// TODO [SPR-14184] Delete @ContextConfiguration once Spring supports it on interfaces
 @ContextConfiguration(classes = TestConfig.class)
 class DogDefaultInterfaceMethodsTests implements GenericComicCharactersDefaultInterfaceMethodsTests<Dog> {
 
