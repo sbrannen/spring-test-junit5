@@ -16,22 +16,18 @@
 
 package org.springframework.test.context.junit5.defaultmethods;
 
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit5.SpringExtension;
-import org.springframework.test.context.junit5.TestConfig;
 import org.springframework.test.context.junit5.comics.Cat;
 
 /**
  * Parameterized test class for integration tests that demonstrate support for
- * default interface methods and Java generics in JUnit 5 test classes when used
+ * interface default methods and Java generics in JUnit 5 test classes when used
  * with the Spring TestContext Framework and the {@link SpringExtension}.
  *
  * @author Sam Brannen
  * @since 5.0
  */
-// TODO [SPR-14184] Delete @ContextConfiguration once Spring supports it on interfaces
-@ContextConfiguration(classes = TestConfig.class)
-class CatDefaultInterfaceMethodsTests implements GenericComicCharactersDefaultInterfaceMethodsTests<Cat> {
+class CatInterfaceDefaultMethodsTests implements GenericComicCharactersInterfaceDefaultMethodsTests<Cat> {
 
 	@Override
 	public int getExpectedNumCharacters() {

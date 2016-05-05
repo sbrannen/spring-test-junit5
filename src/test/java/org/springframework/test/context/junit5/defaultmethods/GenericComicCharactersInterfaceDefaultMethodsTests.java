@@ -31,7 +31,7 @@ import org.springframework.test.context.junit5.TestConfig;
 import org.springframework.test.context.junit5.comics.Character;
 
 /**
- * Interface for integration tests that demonstrate support for default interface
+ * Interface for integration tests that demonstrate support for interface default
  * methods and Java generics in JUnit 5 test classes when used with the Spring
  * TestContext Framework and the {@link SpringExtension}.
  *
@@ -40,7 +40,7 @@ import org.springframework.test.context.junit5.comics.Character;
  */
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestConfig.class)
-interface GenericComicCharactersDefaultInterfaceMethodsTests<C extends Character> {
+interface GenericComicCharactersInterfaceDefaultMethodsTests<C extends Character> {
 
 	@Test
 	default void autowiredParameterWithParameterizedList(@Autowired List<C> characters) {
