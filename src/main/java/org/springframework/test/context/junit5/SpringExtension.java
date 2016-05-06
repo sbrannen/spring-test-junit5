@@ -21,10 +21,10 @@ import java.lang.reflect.Parameter;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.junit.gen5.api.extension.AfterAllExtensionPoint;
-import org.junit.gen5.api.extension.AfterEachExtensionPoint;
-import org.junit.gen5.api.extension.BeforeAllExtensionPoint;
-import org.junit.gen5.api.extension.BeforeEachExtensionPoint;
+import org.junit.gen5.api.extension.AfterAllCallback;
+import org.junit.gen5.api.extension.AfterEachCallback;
+import org.junit.gen5.api.extension.BeforeAllCallback;
+import org.junit.gen5.api.extension.BeforeEachCallback;
 import org.junit.gen5.api.extension.ContainerExtensionContext;
 import org.junit.gen5.api.extension.ExtensionContext;
 import org.junit.gen5.api.extension.InstancePostProcessor;
@@ -51,8 +51,8 @@ import org.springframework.util.Assert;
  * @see org.springframework.test.context.junit5.web.SpringJUnit5WebConfig
  * @see org.springframework.test.context.TestContextManager
  */
-public class SpringExtension implements BeforeAllExtensionPoint, AfterAllExtensionPoint, InstancePostProcessor,
-		BeforeEachExtensionPoint, AfterEachExtensionPoint, MethodParameterResolver {
+public class SpringExtension implements BeforeAllCallback, AfterAllCallback, InstancePostProcessor, BeforeEachCallback,
+		AfterEachCallback, MethodParameterResolver {
 
 	/**
 	 * Cache of {@code TestContextManagers} keyed by test class.
