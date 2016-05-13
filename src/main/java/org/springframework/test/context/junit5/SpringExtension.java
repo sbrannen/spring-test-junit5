@@ -86,10 +86,8 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Ins
 	 * Delegates to {@link TestContextManager#prepareTestInstance}.
 	 */
 	@Override
-	public void postProcessTestInstance(TestExtensionContext context) throws Exception {
-		Class<?> testClass = context.getTestClass();
-		Object testInstance = context.getTestInstance();
-		getTestContextManager(testClass).prepareTestInstance(testInstance);
+	public void postProcessTestInstance(Object testInstance, ExtensionContext context) throws Exception {
+		getTestContextManager(context.getTestClass()).prepareTestInstance(testInstance);
 	}
 
 	/**
