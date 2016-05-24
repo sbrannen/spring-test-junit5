@@ -27,11 +27,11 @@ import org.junit.gen5.api.extension.BeforeAllCallback;
 import org.junit.gen5.api.extension.BeforeEachCallback;
 import org.junit.gen5.api.extension.ContainerExtensionContext;
 import org.junit.gen5.api.extension.ExtensionContext;
-import org.junit.gen5.api.extension.InstancePostProcessor;
 import org.junit.gen5.api.extension.MethodInvocationContext;
 import org.junit.gen5.api.extension.MethodParameterResolver;
 import org.junit.gen5.api.extension.ParameterResolutionException;
 import org.junit.gen5.api.extension.TestExtensionContext;
+import org.junit.gen5.api.extension.TestInstancePostProcessor;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.TestContextManager;
@@ -51,8 +51,8 @@ import org.springframework.util.Assert;
  * @see org.springframework.test.context.junit5.web.SpringJUnit5WebConfig
  * @see org.springframework.test.context.TestContextManager
  */
-public class SpringExtension implements BeforeAllCallback, AfterAllCallback, InstancePostProcessor, BeforeEachCallback,
-		AfterEachCallback, MethodParameterResolver {
+public class SpringExtension implements BeforeAllCallback, AfterAllCallback, TestInstancePostProcessor,
+		BeforeEachCallback, AfterEachCallback, MethodParameterResolver {
 
 	/**
 	 * Cache of {@code TestContextManagers} keyed by test class.
@@ -64,7 +64,7 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Ins
 	 */
 	@Override
 	public void beforeAll(ContainerExtensionContext context) throws Exception {
-		Class<?> testClass = context.getTestClass();
+		Class<?> testClass = context.getTestClass().get();
 		getTestContextManager(testClass).beforeTestClass();
 	}
 
@@ -73,7 +73,7 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Ins
 	 */
 	@Override
 	public void afterAll(ContainerExtensionContext context) throws Exception {
-		Class<?> testClass = context.getTestClass();
+		Class<?> testClass = context.getTestClass().get();
 		try {
 			getTestContextManager(testClass).afterTestClass();
 		}
@@ -87,7 +87,7 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Ins
 	 */
 	@Override
 	public void postProcessTestInstance(Object testInstance, ExtensionContext context) throws Exception {
-		getTestContextManager(context.getTestClass()).prepareTestInstance(testInstance);
+		getTestContextManager(context.getTestClass().get()).prepareTestInstance(testInstance);
 	}
 
 	/**
@@ -95,9 +95,9 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Ins
 	 */
 	@Override
 	public void beforeEach(TestExtensionContext context) throws Exception {
-		Class<?> testClass = context.getTestClass();
+		Class<?> testClass = context.getTestClass().get();
 		Object testInstance = context.getTestInstance();
-		Method testMethod = context.getTestMethod();
+		Method testMethod = context.getTestMethod().get();
 		getTestContextManager(testClass).beforeTestMethod(testInstance, testMethod);
 	}
 
@@ -106,9 +106,9 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Ins
 	 */
 	@Override
 	public void afterEach(TestExtensionContext context) throws Exception {
-		Class<?> testClass = context.getTestClass();
+		Class<?> testClass = context.getTestClass().get();
 		Object testInstance = context.getTestInstance();
-		Method testMethod = context.getTestMethod();
+		Method testMethod = context.getTestMethod().get();
 		// TODO Retrieve exception from TestExtensionContext once supported by JUnit 5.
 		Throwable testException = null; // context.getTestException();
 		getTestContextManager(testClass).afterTestMethod(testInstance, testMethod, testException);
@@ -139,7 +139,7 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Ins
 	public Object resolve(Parameter parameter, MethodInvocationContext methodInvocationContext,
 			ExtensionContext extensionContext) throws ParameterResolutionException {
 
-		Class<?> testClass = extensionContext.getTestClass();
+		Class<?> testClass = extensionContext.getTestClass().get();
 		ApplicationContext applicationContext = getApplicationContext(testClass);
 		return ParameterAutowireUtils.resolveDependency(parameter, testClass, applicationContext);
 	}
