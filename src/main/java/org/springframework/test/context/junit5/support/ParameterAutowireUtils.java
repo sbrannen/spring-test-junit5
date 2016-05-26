@@ -18,6 +18,7 @@ package org.springframework.test.context.junit5.support;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
 
@@ -94,7 +95,9 @@ public abstract class ParameterAutowireUtils {
 			ApplicationContext applicationContext) {
 
 		boolean required = findMergedAnnotation(parameter, Autowired.class).map(Autowired::required).orElse(true);
-		MethodParameter methodParameter = MethodParameterFactory.createSynthesizingMethodParameter(parameter);
+		MethodParameter methodParameter = (parameter.getDeclaringExecutable() instanceof Method
+				? MethodParameterFactory.createSynthesizingMethodParameter(parameter)
+				: MethodParameterFactory.createMethodParameter(parameter));
 		DependencyDescriptor descriptor = new DependencyDescriptor(methodParameter, required);
 		descriptor.setContainingClass(containingClass);
 
