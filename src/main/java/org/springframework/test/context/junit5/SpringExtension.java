@@ -19,6 +19,7 @@ package org.springframework.test.context.junit5;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.junit.gen5.api.extension.AfterAllCallback;
@@ -27,9 +28,7 @@ import org.junit.gen5.api.extension.BeforeAllCallback;
 import org.junit.gen5.api.extension.BeforeEachCallback;
 import org.junit.gen5.api.extension.ContainerExtensionContext;
 import org.junit.gen5.api.extension.ExtensionContext;
-import org.junit.gen5.api.extension.MethodInvocationContext;
-import org.junit.gen5.api.extension.MethodParameterResolver;
-import org.junit.gen5.api.extension.ParameterResolutionException;
+import org.junit.gen5.api.extension.ParameterResolver;
 import org.junit.gen5.api.extension.TestExtensionContext;
 import org.junit.gen5.api.extension.TestInstancePostProcessor;
 
@@ -52,7 +51,7 @@ import org.springframework.util.Assert;
  * @see org.springframework.test.context.TestContextManager
  */
 public class SpringExtension implements BeforeAllCallback, AfterAllCallback, TestInstancePostProcessor,
-		BeforeEachCallback, AfterEachCallback, MethodParameterResolver {
+		BeforeEachCallback, AfterEachCallback, ParameterResolver {
 
 	/**
 	 * Cache of {@code TestContextManagers} keyed by test class.
@@ -122,9 +121,7 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Tes
 	 * @see ParameterAutowireUtils#isAutowirable
 	 */
 	@Override
-	public boolean supports(Parameter parameter, MethodInvocationContext methodInvocationContext,
-			ExtensionContext extensionContext) throws ParameterResolutionException {
-
+	public boolean supports(Parameter parameter, Optional<Object> target, ExtensionContext extensionContext) {
 		return ParameterAutowireUtils.isAutowirable(parameter);
 	}
 
@@ -136,9 +133,7 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Tes
 	 * @see ParameterAutowireUtils#resolveDependency
 	 */
 	@Override
-	public Object resolve(Parameter parameter, MethodInvocationContext methodInvocationContext,
-			ExtensionContext extensionContext) throws ParameterResolutionException {
-
+	public Object resolve(Parameter parameter, Optional<Object> target, ExtensionContext extensionContext) {
 		Class<?> testClass = extensionContext.getTestClass().get();
 		ApplicationContext applicationContext = getApplicationContext(testClass);
 		return ParameterAutowireUtils.resolveDependency(parameter, testClass, applicationContext);
