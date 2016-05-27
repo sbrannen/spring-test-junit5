@@ -20,7 +20,6 @@ import static org.junit.gen5.api.Assertions.assertEquals;
 import static org.junit.gen5.api.Assertions.assertNotNull;
 
 import org.junit.gen5.api.Test;
-import org.junit.gen5.api.TestInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,9 +29,8 @@ import org.springframework.test.context.junit5.comics.Dog;
 import org.springframework.test.context.junit5.comics.Person;
 
 /**
- * Integration tests which demonstrate support for autowiring individual
- * parameters in test class constructors using {@link Autowired @Autowired}
- * and {@link Value @Value} with the Spring TestContext Framework and JUnit 5.
+ * Integration tests which demonstrate support for {@link Autowired @Autowired}
+ * test class constructors with the Spring TestContext Framework and JUnit 5.
  *
  * <p>To run these tests in an IDE, simply run {@link SpringExtensionTestSuite}
  * as a JUnit 4 test.
@@ -40,26 +38,25 @@ import org.springframework.test.context.junit5.comics.Person;
  * @author Sam Brannen
  * @since 5.0
  * @see SpringExtension
- * @see SpringJUnit5AutowiredConstructorInjectionTests
+ * @see SpringJUnit5ConstructorInjectionTests
  */
 @SpringJUnit5Config(TestConfig.class)
 @TestPropertySource(properties = "enigma = 42")
-class SpringJUnit5ConstructorInjectionTests {
+class SpringJUnit5AutowiredConstructorInjectionTests {
 
 	final ApplicationContext applicationContext;
 	final Person dilbert;
 	final Dog dog;
 	final Integer enigma;
-	final TestInfo testInfo;
 
-	SpringJUnit5ConstructorInjectionTests(ApplicationContext applicationContext, @Autowired Person dilbert,
-			@Autowired Dog dog, @Value("${enigma}") Integer enigma, TestInfo testInfo) {
+	@Autowired
+	SpringJUnit5AutowiredConstructorInjectionTests(ApplicationContext applicationContext, Person dilbert, Dog dog,
+			@Value("${enigma}") Integer enigma) {
 
 		this.applicationContext = applicationContext;
 		this.dilbert = dilbert;
 		this.dog = dog;
 		this.enigma = enigma;
-		this.testInfo = testInfo;
 	}
 
 	@Test
@@ -81,11 +78,6 @@ class SpringJUnit5ConstructorInjectionTests {
 	void propertyPlaceholderInjected() {
 		assertNotNull(this.enigma, "Enigma should have been injected via @Value by Spring");
 		assertEquals(new Integer(42), this.enigma, "enigma");
-	}
-
-	@Test
-	void testInfoInjected() {
-		assertNotNull(this.testInfo, "TestInfo should have been injected by JUnit");
 	}
 
 }

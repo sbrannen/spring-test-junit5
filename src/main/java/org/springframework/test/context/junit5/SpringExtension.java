@@ -16,6 +16,8 @@
 
 package org.springframework.test.context.junit5;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Map;
@@ -32,7 +34,9 @@ import org.junit.gen5.api.extension.ParameterResolver;
 import org.junit.gen5.api.extension.TestExtensionContext;
 import org.junit.gen5.api.extension.TestInstancePostProcessor;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.test.context.TestContextManager;
 import org.springframework.test.context.junit5.support.ParameterAutowireUtils;
 import org.springframework.util.Assert;
@@ -116,13 +120,22 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Tes
 	/**
 	 * Determine if the value for the supplied {@link Parameter} should be autowired
 	 * from the test's {@link ApplicationContext}.
-	 * <p>Delegates to {@link ParameterAutowireUtils#isAutowirable}.
+	 * <p>Returns {@code true} if the parameter is declared in a {@link Constructor}
+	 * that is annotated with {@link Autowired @Autowired} and otherwise delegates
+	 * to {@link ParameterAutowireUtils#isAutowirable}.
+	 * <p><strong>WARNING</strong>: if the parameter is declared in a {@code Constructor}
+	 * that is annotated with {@code @Autowired}, Spring will assume the responsibility
+	 * for resolving all parameters in the constructor. Consequently, no other
+	 * registered {@link ParameterResolver} will be able to resolve parameters.
+	 *
 	 * @see #resolve
 	 * @see ParameterAutowireUtils#isAutowirable
 	 */
 	@Override
 	public boolean supports(Parameter parameter, Optional<Object> target, ExtensionContext extensionContext) {
-		return ParameterAutowireUtils.isAutowirable(parameter);
+		Executable executable = parameter.getDeclaringExecutable();
+		return (executable instanceof Constructor && AnnotatedElementUtils.hasAnnotation(executable, Autowired.class))
+				|| ParameterAutowireUtils.isAutowirable(parameter);
 	}
 
 	/**
