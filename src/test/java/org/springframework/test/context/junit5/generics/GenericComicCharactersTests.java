@@ -32,8 +32,8 @@ import org.springframework.test.context.junit5.comics.Character;
 
 /**
  * Abstract base class for integration tests that demonstrate support for
- * Java generics in JUnit 5 test classes when used with the Spring
- * TestContext Framework and the {@link SpringExtension}.
+ * Java generics in JUnit 5 test classes when used with the Spring TestContext
+ * Framework and the {@link SpringExtension}.
  *
  * @author Sam Brannen
  * @since 5.0

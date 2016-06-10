@@ -21,8 +21,8 @@ import org.springframework.test.context.junit5.comics.Cat;
 
 /**
  * Parameterized test class for integration tests that demonstrate support for
- * Java generics in JUnit 5 test classes when used with the the Spring
- * TestContext Framework and the {@link SpringExtension}.
+ * Java generics in JUnit 5 test classes when used with the Spring TestContext
+ * Framework and the {@link SpringExtension}.
  *
  * @author Sam Brannen
  * @since 5.0
@@ -30,12 +30,12 @@ import org.springframework.test.context.junit5.comics.Cat;
 class CatTests extends GenericComicCharactersTests<Cat> {
 
 	@Override
-	protected int getExpectedNumCharacters() {
+	int getExpectedNumCharacters() {
 		return 2;
 	}
 
 	@Override
-	protected String getExpectedName() {
+	String getExpectedName() {
 		return "Catbert";
 	}
 

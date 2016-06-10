@@ -22,11 +22,9 @@ import static org.junit.gen5.api.Assertions.assertNotNull;
 import java.util.List;
 
 import org.junit.gen5.api.Test;
-import org.junit.gen5.api.extension.ExtendWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit5.SpringExtension;
+import org.springframework.test.context.junit5.SpringJUnit5Config;
 import org.springframework.test.context.junit5.TestConfig;
 import org.springframework.test.context.junit5.comics.Character;
 
@@ -38,8 +36,7 @@ import org.springframework.test.context.junit5.comics.Character;
  * @author Sam Brannen
  * @since 5.0
  */
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = TestConfig.class)
+@SpringJUnit5Config(TestConfig.class)
 interface GenericComicCharactersInterfaceDefaultMethodsTests<C extends Character> {
 
 	@Test

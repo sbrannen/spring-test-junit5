@@ -34,33 +34,33 @@ import org.springframework.test.context.junit5.comics.Person;
 public class TestConfig {
 
 	@Bean
-	public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
+	static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
 		return new PropertySourcesPlaceholderConfigurer();
 	}
 
 	@Bean
-	public Person dilbert() {
+	Person dilbert() {
 		return new Person("Dilbert");
 	}
 
 	@Bean
-	public Person wally() {
+	Person wally() {
 		return new Person("Wally");
 	}
 
 	@Bean
-	public Dog dogbert() {
+	Dog dogbert() {
 		return new Dog("Dogbert");
 	}
 
 	@Primary
 	@Bean
-	public Cat catbert() {
+	Cat catbert() {
 		return new Cat("Catbert");
 	}
 
 	@Bean
-	public Cat garfield() {
+	Cat garfield() {
 		return new Cat("Garfield");
 	}
 
