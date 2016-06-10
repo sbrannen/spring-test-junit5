@@ -46,7 +46,7 @@ a cross-platform, self-contained bootstrap mechanism for the build.
 - [Git][]
 - [JDK 8][JDK8] update 60 or later
 - [JUnit 5][] `5.0.0-SNAPSHOT`
-- [Spring Framework][] `4.3.0.RC1`
+- [Spring Framework][] `4.3.0.RELEASE`
 
 Be sure that your `JAVA_HOME` environment variable points to the `jdk1.8.0` folder
 extracted from the JDK download.
