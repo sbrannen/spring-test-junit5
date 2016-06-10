@@ -21,7 +21,7 @@ jar {
 group = 'org.springframework.test'
 
 ext.hamcrestVersion   = '1.3'
-ext.jacksonVersion    = '2.7.0'
+ext.jacksonVersion    = '2.7.4'
 ext.jsonpathVersion   = '2.2.0'
 ext.junit5Version     = '5.0.0-SNAPSHOT'
 ext.log4JVersion      = '2.5'
