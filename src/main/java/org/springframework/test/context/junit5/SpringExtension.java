@@ -21,7 +21,6 @@ import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.junit.gen5.api.extension.AfterAllCallback;
@@ -30,6 +29,7 @@ import org.junit.gen5.api.extension.BeforeAllCallback;
 import org.junit.gen5.api.extension.BeforeEachCallback;
 import org.junit.gen5.api.extension.ContainerExtensionContext;
 import org.junit.gen5.api.extension.ExtensionContext;
+import org.junit.gen5.api.extension.ParameterContext;
 import org.junit.gen5.api.extension.ParameterResolver;
 import org.junit.gen5.api.extension.TestExtensionContext;
 import org.junit.gen5.api.extension.TestInstancePostProcessor;
@@ -132,7 +132,8 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Tes
 	 * @see ParameterAutowireUtils#isAutowirable
 	 */
 	@Override
-	public boolean supports(Parameter parameter, Optional<Object> target, ExtensionContext extensionContext) {
+	public boolean supports(ParameterContext parameterContext, ExtensionContext extensionContext) {
+		Parameter parameter = parameterContext.getParameter();
 		Executable executable = parameter.getDeclaringExecutable();
 		return (executable instanceof Constructor && AnnotatedElementUtils.hasAnnotation(executable, Autowired.class))
 				|| ParameterAutowireUtils.isAutowirable(parameter);
@@ -146,7 +147,8 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Tes
 	 * @see ParameterAutowireUtils#resolveDependency
 	 */
 	@Override
-	public Object resolve(Parameter parameter, Optional<Object> target, ExtensionContext extensionContext) {
+	public Object resolve(ParameterContext parameterContext, ExtensionContext extensionContext) {
+		Parameter parameter = parameterContext.getParameter();
 		Class<?> testClass = extensionContext.getTestClass().get();
 		ApplicationContext applicationContext = getApplicationContext(testClass);
 		return ParameterAutowireUtils.resolveDependency(parameter, testClass, applicationContext);

@@ -16,9 +16,9 @@
 
 package org.springframework.test.context.junit5;
 
+import org.junit.gen5.junit4.runner.IncludeEngines;
 import org.junit.gen5.junit4.runner.JUnit5;
 import org.junit.gen5.junit4.runner.Packages;
-import org.junit.gen5.junit4.runner.RequireEngine;
 import org.junit.runner.RunWith;
 
 /**
@@ -32,7 +32,7 @@ import org.junit.runner.RunWith;
  * @see org.springframework.test.context.junit5.web.WebSpringExtensionTests
  */
 @RunWith(JUnit5.class)
-@RequireEngine("junit5")
+@IncludeEngines("junit5")
 @Packages("org.springframework.test.context.junit5")
 public class SpringExtensionTestSuite {
 }
