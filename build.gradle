@@ -1,5 +1,6 @@
 buildscript {
 	repositories {
+		mavenCentral()
 		maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 	}
 	dependencies {
@@ -66,9 +67,8 @@ compileTestJava {
 
 junit5 {
 	version "${junit5Version}"
-	runJunit4 true // just in order to 'disable' the standard Gradle 'test' task;
 	engines {
-		include 'junit5' // we actually only want to run JUnit 5 tests...
+		include 'junit5' // we only want to run JUnit 5 tests...
 	}
 	matchClassName '.*Tests' // whose class names match this pattern.
 	logManager 'org.apache.logging.log4j.jul.LogManager'
