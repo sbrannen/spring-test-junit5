@@ -45,6 +45,7 @@ dependencies {
 	testCompile("com.jayway.jsonpath:json-path:${jsonpathVersion}")
 	testCompile("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
 	testRuntime("org.junit:junit5-engine:${junit5Version}")
+	testRuntime("org.junit:junit-console:${junit5Version}")
 	testRuntime("org.apache.logging.log4j:log4j-core:${log4JVersion}")
 	testRuntime("org.apache.logging.log4j:log4j-jul:${log4JVersion}")
 	testRuntime("org.apache.logging.log4j:log4j-jcl:${log4JVersion}")
@@ -66,7 +67,6 @@ compileTestJava {
 }
 
 junit5 {
-	version "${junit5Version}"
 	engines {
 		include 'junit5' // we only want to run JUnit 5 tests...
 	}
