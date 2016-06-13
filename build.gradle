@@ -45,13 +45,12 @@ dependencies {
 	testCompile("com.jayway.jsonpath:json-path:${jsonpathVersion}")
 	testCompile("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
 	testRuntime("org.junit:junit5-engine:${junit5Version}")
-	testRuntime("org.junit:junit-console:${junit5Version}")
 	testRuntime("org.apache.logging.log4j:log4j-core:${log4JVersion}")
 	testRuntime("org.apache.logging.log4j:log4j-jul:${log4JVersion}")
 	testRuntime("org.apache.logging.log4j:log4j-jcl:${log4JVersion}")
 	testRuntime("org.apache.logging.log4j:log4j-slf4j-impl:${log4JVersion}")
 
-	// Include JUnit 4 to use JUnit5 Runner within the IDE
+	// Enable use of the JUnit5 Runner within the IDE
 	testCompile("org.junit:junit4-runner:${junit5Version}")
 }
 
