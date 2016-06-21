@@ -16,9 +16,9 @@
 
 package org.springframework.test.context.junit5;
 
-import org.junit.gen5.junit4.runner.IncludeEngines;
-import org.junit.gen5.junit4.runner.JUnit5;
-import org.junit.gen5.junit4.runner.Packages;
+import org.junit.platform.runner.IncludeEngines;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.platform.runner.SelectPackages;
 import org.junit.runner.RunWith;
 
 /**
@@ -31,8 +31,8 @@ import org.junit.runner.RunWith;
  * @see ComposedSpringExtensionTests
  * @see org.springframework.test.context.junit5.web.WebSpringExtensionTests
  */
-@RunWith(JUnit5.class)
-@IncludeEngines("junit5")
-@Packages("org.springframework.test.context.junit5")
+@RunWith(JUnitPlatform.class)
+@IncludeEngines("junit-jupiter")
+@SelectPackages("org.springframework.test.context.junit5")
 public class SpringExtensionTestSuite {
 }

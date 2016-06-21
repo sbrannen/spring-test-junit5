@@ -16,10 +16,10 @@
 
 package org.springframework.test.context.junit5;
 
-import static org.junit.gen5.api.Assertions.assertEquals;
-import static org.junit.gen5.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.gen5.api.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

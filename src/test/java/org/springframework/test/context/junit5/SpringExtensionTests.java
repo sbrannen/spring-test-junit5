@@ -16,19 +16,19 @@
 
 package org.springframework.test.context.junit5;
 
-import static org.junit.gen5.api.Assertions.assertEquals;
-import static org.junit.gen5.api.Assertions.assertFalse;
-import static org.junit.gen5.api.Assertions.assertNotNull;
-import static org.junit.gen5.api.Assertions.assertNull;
-import static org.junit.gen5.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.gen5.api.Test;
-import org.junit.gen5.api.TestInfo;
-import org.junit.gen5.api.TestReporter;
-import org.junit.gen5.api.extension.ExtendWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.TestReporter;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

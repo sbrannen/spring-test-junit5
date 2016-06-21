@@ -23,7 +23,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.junit.gen5.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.annotation.AliasFor;

@@ -24,8 +24,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
-import org.junit.gen5.api.BeforeEach;
-import org.junit.gen5.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.test.context.junit5.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;

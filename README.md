@@ -44,9 +44,9 @@ a cross-platform, self-contained bootstrap mechanism for the build.
 ## Prerequisites and Dependencies
 
 - [Git][]
-- [JDK 8][JDK8] update 60 or later
-- [JUnit 5][] `5.0.0-SNAPSHOT`
-- [Spring Framework][] `4.3.0.RELEASE`
+- [JDK 8][JDK8]: update 60 or later
+- [JUnit 5][]: JUnit Jupiter `5.0.0-SNAPSHOT` and JUnit Platform `1.0.0-SNAPSHOT`
+- [Spring Framework][]: `4.3.0.RELEASE`
 
 Be sure that your `JAVA_HOME` environment variable points to the `jdk1.8.0` folder
 extracted from the JDK download.
@@ -66,7 +66,7 @@ Build all JARs, distribution ZIP files, and docs:
 Executing `gradlew clean test` from the command line should result in output similar to the following.
 
 ```
-:junit5Test
+:junitPlatformTest
 
 Test run finished after 1902 ms
 [        37 tests found     ]
@@ -107,7 +107,7 @@ Ant:          Apache Ant(TM) version 1.9.6 compiled on June 29 2015
 JVM:          9-ea (Oracle Corporation 9-ea+122)
 OS:           Mac OS X 10.11.5 x86_64
 
-:junit5Test
+:junitPlatformTest
 
 Test run finished after 1902 ms
 [        37 tests found     ]

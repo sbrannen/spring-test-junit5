@@ -23,16 +23,16 @@ import java.lang.reflect.Parameter;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.junit.gen5.api.extension.AfterAllCallback;
-import org.junit.gen5.api.extension.AfterEachCallback;
-import org.junit.gen5.api.extension.BeforeAllCallback;
-import org.junit.gen5.api.extension.BeforeEachCallback;
-import org.junit.gen5.api.extension.ContainerExtensionContext;
-import org.junit.gen5.api.extension.ExtensionContext;
-import org.junit.gen5.api.extension.ParameterContext;
-import org.junit.gen5.api.extension.ParameterResolver;
-import org.junit.gen5.api.extension.TestExtensionContext;
-import org.junit.gen5.api.extension.TestInstancePostProcessor;
+import org.junit.jupiter.api.extension.AfterAllCallback;
+import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.BeforeAllCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.ContainerExtensionContext;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.ParameterContext;
+import org.junit.jupiter.api.extension.ParameterResolver;
+import org.junit.jupiter.api.extension.TestExtensionContext;
+import org.junit.jupiter.api.extension.TestInstancePostProcessor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
