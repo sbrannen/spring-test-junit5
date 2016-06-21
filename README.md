@@ -7,7 +7,7 @@ into [Spring Framework][] 5.0 in conjunction with [SPR-13575][].
 # Using the `SpringExtension`
 
 Currently, all that's needed to use the _Spring TestContext Framework_ with JUnit 5
-is to annotate a JUnit 5 based test class with `@ExtendWith(SpringExtension.class)`
+is to annotate a JUnit Jupiter based test class with `@ExtendWith(SpringExtension.class)`
 and whatever Spring annotations you need (e.g., `@ContextConfiguration`, `@Transactional`,
 `@Sql`, etc.). See [`SpringExtensionTests`] for an example of this extension in action,
 and check out the source code of [`SpringExtension`] if you're interested in the 
@@ -18,8 +18,8 @@ implementation details.
 Spring has supported [composed annotations] for several years now, and as of JUnit 5
 annotations in JUnit can also be used as meta-annotations. We can therefore create
 custom annotations that are composed from Spring annotations **and** JUnit 5
-annotations. Take a look at [`@SpringJUnit5Config`] for an example, and check out
-[`ComposedSpringExtensionTests`] for an example of `@SpringJUnit5Config` in action.
+annotations. Take a look at [`@SpringJUnitJupiterConfig`] for an example, and check out
+[`ComposedSpringExtensionTests`] for an example of `@SpringJUnitJupiterConfig` in action.
 
 # License
 
@@ -135,8 +135,8 @@ In order to execute the tests within an IDE, simply run [`SpringExtensionTestSui
 [SPR-13575]: https://jira.spring.io/browse/SPR-13575
 [Spring Framework]: http://projects.spring.io/spring-framework/
 [Spring TestContext Framework]: http://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/#testcontext-framework
-[`@SpringJUnit5Config`]: https://github.com/sbrannen/spring-test-junit5/blob/master/src/main/java/org/springframework/test/context/junit5/SpringJUnit5Config.java
-[`ComposedSpringExtensionTests`]: https://github.com/sbrannen/spring-test-junit5/blob/master/src/test/java/org/springframework/test/context/junit5/ComposedSpringExtensionTests.java
-[`SpringExtensionTestSuite`]: https://github.com/sbrannen/spring-test-junit5/blob/master/src/test/java/org/springframework/test/context/junit5/SpringExtensionTestSuite.java
-[`SpringExtensionTests`]: https://github.com/sbrannen/spring-test-junit5/blob/master/src/test/java/org/springframework/test/context/junit5/SpringExtensionTests.java
-[`SpringExtension`]: https://github.com/sbrannen/spring-test-junit5/blob/master/src/main/java/org/springframework/test/context/junit5/SpringExtension.java
+[`@SpringJUnitJupiterConfig`]: https://github.com/sbrannen/spring-test-junit5/blob/master/src/main/java/org/springframework/test/context/junit/jupiter/SpringJUnitJupiterConfig.java
+[`ComposedSpringExtensionTests`]: https://github.com/sbrannen/spring-test-junit5/blob/master/src/test/java/org/springframework/test/context/junit/jupiter/ComposedSpringExtensionTests.java
+[`SpringExtensionTestSuite`]: https://github.com/sbrannen/spring-test-junit5/blob/master/src/test/java/org/springframework/test/context/junit/jupiter/SpringExtensionTestSuite.java
+[`SpringExtensionTests`]: https://github.com/sbrannen/spring-test-junit5/blob/master/src/test/java/org/springframework/test/context/junit/jupiter/SpringExtensionTests.java
+[`SpringExtension`]: https://github.com/sbrannen/spring-test-junit5/blob/master/src/main/java/org/springframework/test/context/junit/jupiter/SpringExtension.java
