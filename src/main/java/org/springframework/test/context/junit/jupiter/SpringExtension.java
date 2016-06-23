@@ -61,7 +61,7 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Tes
 	 * {@link Namespace} in which {@code TestContextManagers} are stored, keyed
 	 * by test class.
 	 */
-	private static final Namespace namespace = Namespace.of(SpringExtension.class);
+	private static final Namespace namespace = Namespace.create(SpringExtension.class);
 
 	/**
 	 * Delegates to {@link TestContextManager#beforeTestClass}.
