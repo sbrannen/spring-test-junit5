@@ -109,11 +109,7 @@ public class SpringExtension implements BeforeAllCallback, AfterAllCallback, Tes
 	public void afterEach(TestExtensionContext context) throws Exception {
 		Object testInstance = context.getTestInstance();
 		Method testMethod = context.getTestMethod().get();
-
-		// TODO Retrieve exception from TestExtensionContext once supported by JUnit Jupiter.
-		// See: https://github.com/junit-team/junit5/issues/92
-		Throwable testException = null; // context.getTestException();
-
+		Throwable testException = context.getTestException().orElse(null);
 		getTestContextManager(context).afterTestMethod(testInstance, testMethod, testException);
 	}
 
