@@ -26,7 +26,7 @@ ext.jacksonVersion       = '2.7.4'
 ext.jsonpathVersion      = '2.2.0'
 ext.junitJupiterVersion  = '5.0.0-SNAPSHOT'
 ext.junitPlatformVersion = '1.0.0-SNAPSHOT'
-ext.log4JVersion         = '2.6.1'
+ext.log4JVersion         = '2.6.2'
 ext.servletApiVersion    = '3.1.0'
 ext.springVersion        = '4.3.1.RELEASE'
 
