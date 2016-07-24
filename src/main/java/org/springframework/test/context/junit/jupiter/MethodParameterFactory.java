@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.test.context.junit.jupiter.support;
+package org.springframework.test.context.junit.jupiter;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
@@ -37,7 +37,7 @@ import org.springframework.util.Assert;
  * @see #createMethodParameter(Parameter)
  * @see #createSynthesizingMethodParameter(Parameter)
  */
-public abstract class MethodParameterFactory {
+abstract class MethodParameterFactory {
 
 	private MethodParameterFactory() {
 		/* no-op */

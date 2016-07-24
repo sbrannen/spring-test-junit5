@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.springframework.test.context.junit.jupiter.support;
+package org.springframework.test.context.junit.jupiter;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -43,7 +43,7 @@ import static org.springframework.core.annotation.AnnotatedElementUtils.hasAnnot
  * @see #isAutowirable(Parameter)
  * @see #resolveDependency(Parameter, Class, ApplicationContext)
  */
-public abstract class ParameterAutowireUtils {
+abstract class ParameterAutowireUtils {
 
 	private ParameterAutowireUtils() {
 		/* no-op */
