@@ -9,9 +9,10 @@ into [Spring Framework][] 5.0 in conjunction with [SPR-13575][].
 Currently, all that's needed to use the _Spring TestContext Framework_ with JUnit 5
 is to annotate a JUnit Jupiter based test class with `@ExtendWith(SpringExtension.class)`
 and whatever Spring annotations you need (e.g., `@ContextConfiguration`, `@Transactional`,
-`@Sql`, etc.). See [`SpringExtensionTests`] for an example of this extension in action,
-and check out the source code of [`SpringExtension`] if you're interested in the 
-implementation details.
+`@Sql`, etc.), but make sure you use `@Test`, `@BeforeEach`, etc. from the appropriate
+`org.junit.jupiter.api` package. See [`SpringExtensionTests`] for an example of this
+extension in action, and check out the source code of [`SpringExtension`] if you're
+interested in the  implementation details.
 
 ## Composing Annotations from Spring & JUnit
 
