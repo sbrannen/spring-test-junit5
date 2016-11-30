@@ -4,7 +4,7 @@ buildscript {
 		// maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 	}
 	dependencies {
-		classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0-M2'
+		classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0-M3'
 	}
 }
 
@@ -24,8 +24,8 @@ group = 'org.springframework.test'
 ext.hamcrestVersion      = '1.3'
 ext.jacksonVersion       = '2.7.4'
 ext.jsonpathVersion      = '2.2.0'
-ext.junitJupiterVersion  = '5.0.0-M2'
-ext.junitPlatformVersion = '1.0.0-M2'
+ext.junitJupiterVersion  = '5.0.0-M3'
+ext.junitPlatformVersion = '1.0.0-M3'
 ext.log4JVersion         = '2.6.2'
 ext.servletApiVersion    = '3.1.0'
 ext.springVersion        = '4.3.1.RELEASE'
@@ -67,7 +67,7 @@ compileTestJava {
 }
 
 junitPlatform {
-	engines.include 'junit-jupiter' // we only want to run JUnit Jupiter tests...
+	filters.engines.include 'junit-jupiter' // we only want to run JUnit Jupiter tests...
 	logManager 'org.apache.logging.log4j.jul.LogManager'
 }
 
