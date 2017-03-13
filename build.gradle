@@ -26,9 +26,9 @@ ext.jacksonVersion       = '2.8.5'
 ext.jsonpathVersion      = '2.2.0'
 ext.junitJupiterVersion  = '5.0.0-M3'
 ext.junitPlatformVersion = '1.0.0-M3'
-ext.log4JVersion         = '2.7'
+ext.log4JVersion         = '2.8'
 ext.servletApiVersion    = '3.1.0'
-ext.springVersion        = '4.3.4.RELEASE'
+ext.springVersion        = '4.3.7.RELEASE'
 
 repositories {
 	mavenCentral()
@@ -67,6 +67,7 @@ compileTestJava {
 }
 
 junitPlatform {
+	// details 'tree' --> coming in M4
 	filters.engines.include 'junit-jupiter' // we only want to run JUnit Jupiter tests...
 	logManager 'org.apache.logging.log4j.jul.LogManager'
 }
@@ -99,5 +100,5 @@ configurations.all {
 }
 
 task wrapper(type: Wrapper) {
-	gradleVersion = '3.2.1'
+	gradleVersion = '3.4.1'
 }
