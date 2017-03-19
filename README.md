@@ -45,12 +45,14 @@ the generated artifact will correspond to the following.
 ## JitPack
 
 If you'd like to build against a release tag for `spring-test-junit5`, you
-may be interested in using [JitPack][]. The following should work in theory
-but have not been tested.
+may be interested in using [JitPack][]. For example, to build against the
+`1.0.0.M3` tag, the following Maven coordinates will work.
 
  - **Group ID**: `com.github.sbrannen`
  - **Artifact ID**: `spring-test-junit5`
  - **Version**: `1.0.0.M3`
+
+For Gradle: `testCompile('com.github.sbrannen:spring-test-junit5:1.0.0.M3')`
 
 # Building from Source
 
