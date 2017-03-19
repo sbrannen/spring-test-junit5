@@ -28,13 +28,29 @@ This project is released under version 2.0 of the [Apache License][].
 
 # Artifacts
 
-There are currently no downloadable artifacts for this project.
-However, if you install in a local Maven repository (see below)
+There are currently no downloadable artifacts for this project; however,
+you may opt to install `spring-test-junit5` in your local Maven repository
+or include a dependency on `spring-test-junit5` via JitPack. See the following
+sections for further details.
+
+## Local Maven Installation
+
+If you install in a local Maven repository (see below)
 the generated artifact will correspond to the following.
 
  - **Group ID**: `org.springframework.test`
  - **Artifact ID**: `spring-test-junit5`
  - **Version**: `1.0.0.BUILD-SNAPSHOT`
+
+## JitPack
+
+If you'd like to build against a release tag for `spring-test-junit5`, you
+may be interested in using [JitPack][]. The following should work in theory
+but have not been tested.
+
+ - **Group ID**: `com.github.sbrannen`
+ - **Artifact ID**: `spring-test-junit5`
+ - **Version**: `1.0.0.M3`
 
 # Building from Source
 
@@ -132,6 +148,7 @@ In order to execute the tests within an IDE, simply run [`SpringExtensionTestSui
 [Git]: http://help.github.com/set-up-git-redirect
 [Gradle]: http://gradle.org
 [JDK8]: http://www.oracle.com/technetwork/java/javase/downloads
+[JitPack]: https://jitpack.io/
 [JUnit 5]: https://github.com/junit-team/junit5
 [SPR-13575]: https://jira.spring.io/browse/SPR-13575
 [Spring Framework]: http://projects.spring.io/spring-framework/
