@@ -85,13 +85,19 @@ Executing `gradlew clean test` from the command line should result in output sim
 ```
 :junitPlatformTest
 
-Test run finished after 1902 ms
-[        37 tests found     ]
-[         0 tests skipped   ]
-[        37 tests started   ]
-[         0 tests aborted   ]
-[        37 tests successful]
-[         0 tests failed    ]
+Test run finished after 2542 ms
+[        12 containers found      ]
+[         0 containers skipped    ]
+[        12 containers started    ]
+[         0 containers aborted    ]
+[        12 containers successful ]
+[         0 containers failed     ]
+[        43 tests found           ]
+[         0 tests skipped         ]
+[        43 tests started         ]
+[         0 tests aborted         ]
+[        43 tests successful      ]
+[         0 tests failed          ]
 ```
 
 ## Building and Testing with JDK 9
@@ -126,15 +132,19 @@ OS:           Mac OS X 10.11.5 x86_64
 
 :junitPlatformTest
 
-Test run finished after 1902 ms
-[        37 tests found     ]
-[         0 tests skipped   ]
-[        37 tests started   ]
-[         0 tests aborted   ]
-[        37 tests successful]
-[         0 tests failed    ]
-
-BUILD SUCCESSFUL
+Test run finished after 2542 ms
+[        12 containers found      ]
+[         0 containers skipped    ]
+[        12 containers started    ]
+[         0 containers aborted    ]
+[        12 containers successful ]
+[         0 containers failed     ]
+[        43 tests found           ]
+[         0 tests skipped         ]
+[        43 tests started         ]
+[         0 tests aborted         ]
+[        43 tests successful      ]
+[         0 tests failed          ]
 ```
 
 # Running Tests in the IDE
