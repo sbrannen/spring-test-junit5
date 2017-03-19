@@ -34,7 +34,7 @@ the generated artifact will correspond to the following.
 
  - **Group ID**: `org.springframework.test`
  - **Artifact ID**: `spring-test-junit5`
- - **Version**: `1.0.0.BUILD-SNAPSHOT`
+ - **Version**: `1.0.0.M3`
 
 # Building from Source
 
