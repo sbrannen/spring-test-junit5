@@ -52,7 +52,22 @@ may be interested in using [JitPack][]. For example, to build against the
  - **Artifact ID**: `spring-test-junit5`
  - **Version**: `1.0.0.M3`
 
-For Gradle: `testCompile('com.github.sbrannen:spring-test-junit5:1.0.0.M3')`
+### JitPack with Gradle:
+
+```groovy
+repositories {
+	mavenCentral()
+	maven { url 'https://jitpack.io' }
+}
+
+// ...
+
+dependencies {
+	// ...
+	testCompile('com.github.sbrannen:spring-test-junit5:1.0.0.M3')
+	// ...
+}
+```
 
 # Building from Source
 
