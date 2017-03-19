@@ -16,7 +16,7 @@ apply plugin: 'org.junit.platform.gradle.plugin'
 
 jar {
 	baseName = 'spring-test-junit5'
-	version = '1.0.0-SNAPSHOT'
+	version = project.version
 }
 
 group = 'org.springframework.test'
