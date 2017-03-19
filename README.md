@@ -1,8 +1,12 @@
 # Spring JUnit 5 Testing Support
 
-This project serves as the official prototype for [JUnit 5][] testing support
-in the [Spring TestContext Framework][] which will eventually be incorporated
-into [Spring Framework][] 5.0 in conjunction with [SPR-13575][].
+This project served as the official prototype for [JUnit 5][] testing support
+in the [Spring TestContext Framework][] and has been incorporated into
+[Spring Framework][] 5.0 in conjunction with [SPR-13575][]. Consequently, no
+further work is planned in this repository in terms of new features: new
+features are only supported in Spring Framework 5.0+. Note, however, that this
+project can in fact be used as a _playground_ for basic JUnit 5 support in
+conjunction with Spring Framework 4.3.
 
 # Using the `SpringExtension`
 
