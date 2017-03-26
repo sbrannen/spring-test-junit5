@@ -73,6 +73,31 @@ dependencies {
 }
 ```
 
+### JitPack with Maven:
+
+```xml
+<repositories>
+	<repository>
+		<id>jitpack.io</id>
+		<url>https://jitpack.io</url>
+	</repository>
+</repositories>
+
+<!-- ... -->
+
+<dependencies>
+	<dependency>
+		<groupId>com.github.sbrannen</groupId>
+		<artifactId>spring-test-junit5</artifactId>
+		<version>1.0.0.M3</version>
+	</dependency>
+
+	<!-- ... -->
+
+</dependencies>
+```
+
+
 # Building from Source
 
 This project uses a [Gradle][]-based build system. In the instructions
