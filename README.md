@@ -56,7 +56,7 @@ may be interested in using [JitPack][]. For example, to build against the
  - **Artifact ID**: `spring-test-junit5`
  - **Version**: `1.0.0.M3`
 
-### JitPack with Gradle:
+### JitPack with Gradle
 
 ```groovy
 repositories {
@@ -73,7 +73,7 @@ dependencies {
 }
 ```
 
-### JitPack with Maven:
+### JitPack with Maven
 
 ```xml
 <repositories>
