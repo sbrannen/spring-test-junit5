@@ -90,6 +90,7 @@ dependencies {
 		<groupId>com.github.sbrannen</groupId>
 		<artifactId>spring-test-junit5</artifactId>
 		<version>1.0.0.M3</version>
+		<scope>test</scope>
 	</dependency>
 
 	<!-- ... -->
