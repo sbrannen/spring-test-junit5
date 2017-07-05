@@ -150,36 +150,86 @@ Test run finished after 2542 ms
 ## Building and Testing with JDK 9
 
 `spring-test-junit5` can be built with and tested against
-[JDK 9 early access builds](https://jdk9.java.net/download/) using
-[Gradle 3.0 nightly builds](http://gradle.org/gradle-nightly-build/).
-
-For example, we can use a Gradle 3.0 nighty build as follows.
-
-```
-$> gradlew wrapper --gradle-distribution-url=https://services.gradle.org/distributions-snapshots/gradle-3.0-20160615000025+0000-bin.zip
-$> gradlew -version
-$> gradlew clean test
-```
-
-Assuming we have OpenJDK `9-ea+122` installed, the above will result in
+[JDK 9 early access builds](http://jdk.java.net/9/) using
+Gradle 4.0.
+ 
+Assuming we have OpenJDK `jdk-9+176` installed, executing
+`gradlew -version && gradlew clean test` will result in
 output similar to the following.
 
 ```
 ------------------------------------------------------------
-Gradle 3.0-20160615000025+0000
+Gradle 4.0
 ------------------------------------------------------------
 
-Build time:   2016-06-15 00:00:25 UTC
-Revision:     c7adf81300e31358a36c2c6837e916df7470ba1b
+Build time:   2017-06-14 15:11:08 UTC
+Revision:     316546a5fcb4e2dfe1d6aa0b73a4e09e8cecb5a5
 
-Groovy:       2.4.7
+Groovy:       2.4.11
 Ant:          Apache Ant(TM) version 1.9.6 compiled on June 29 2015
-JVM:          9-ea (Oracle Corporation 9-ea+122)
-OS:           Mac OS X 10.11.5 x86_64
+JVM:          9 (Oracle Corporation 9+176)
+OS:           Mac OS X 10.12.5 x86_64
 
 :junitPlatformTest
 
-Test run finished after 2542 ms
+╷
+└─ JUnit Jupiter ✔
+   ├─ @SpringJUnitJupiterConfig Tests ✔
+   │  ├─ ApplicationContext injected into method ✔
+   │  └─ Spring @Beans injected into fields ✔
+   ├─ CatInterfaceDefaultMethodsTests ✔
+   │  ├─ autowiredParameterWithParameterizedList(List) ✔
+   │  └─ autowiredParameterWithGenericBean(Character) ✔
+   ├─ DogInterfaceDefaultMethodsTests ✔
+   │  ├─ autowiredParameterWithParameterizedList(List) ✔
+   │  └─ autowiredParameterWithGenericBean(Character) ✔
+   ├─ CatTests ✔
+   │  ├─ autowiredFields() ✔
+   │  └─ autowiredParameterByTypeForSingleGenericBean(Character) ✔
+   ├─ DogTests ✔
+   │  ├─ autowiredFields() ✔
+   │  └─ autowiredParameterByTypeForSingleGenericBean(Character) ✔
+   ├─ SpringExtensionTests ✔
+   │  ├─ autowiredFields() ✔
+   │  ├─ applicationContextInjectedIntoMethod(ApplicationContext) ✔
+   │  ├─ genericApplicationContextInjectedIntoMethod(GenericApplicationContext) ✔
+   │  ├─ autowiredParameterByTypeForSingleBean(Dog) ✔
+   │  ├─ autowiredParameterByTypeForPrimaryBean(Cat) ✔
+   │  ├─ autowiredParameterWithExplicitQualifier(Person) ✔
+   │  ├─ autowiredParameterWithImplicitQualifierBasedOnParameterName(Person) ✔
+   │  ├─ autowiredParameterAsJavaUtilOptional(Optional) ✔
+   │  ├─ autowiredParameterThatDoesNotExistAsJavaUtilOptional(Optional) ✔
+   │  ├─ autowiredParameterThatDoesNotExistButIsNotRequired(Number) ✔
+   │  ├─ autowiredParameterOfList(List) ✔
+   │  ├─ valueParameterWithPrimitiveType(int) ✔
+   │  ├─ valueParameterFromPropertyPlaceholder(Integer) ✔
+   │  ├─ valueParameterFromDefaultValueForPropertyPlaceholder(Boolean) ✔
+   │  ├─ valueParameterFromSpelExpression(String) ✔
+   │  ├─ valueParameterFromSpelExpressionWithNestedPropertyPlaceholder(String) ✔
+   │  └─ junitAndSpringMethodInjectionCombined(Cat, TestInfo, ApplicationContext, TestReporter) ✔
+   ├─ SpringJUnit5AutowiredConstructorInjectionTests ✔
+   │  ├─ applicationContextInjected() ✔
+   │  ├─ propertyPlaceholderInjected() ✔
+   │  └─ beansInjected() ✔
+   ├─ SpringJUnit5ConstructorInjectionTests ✔
+   │  ├─ applicationContextInjected() ✔
+   │  ├─ propertyPlaceholderInjected() ✔
+   │  ├─ testInfoInjected() ✔
+   │  └─ beansInjected() ✔
+   ├─ MultipleWebRequestsSpringExtensionTests ✔
+   │  ├─ getPerson42() ✔
+   │  └─ getPerson99() ✔
+   ├─ Web SpringExtension Tests ✔
+   │  └─ springMvcTest(WebApplicationContext) ✔
+   └─ XmlSpringExtensionTests ✔
+      ├─ autowiredFields() ✔
+      ├─ applicationContextInjectedIntoMethod(ApplicationContext) ✔
+      ├─ genericApplicationContextInjectedIntoMethod(GenericApplicationContext) ✔
+      ├─ autowiredParameterWithExplicitQualifier(Person) ✔
+      ├─ autowiredParameterWithImplicitQualifierBasedOnParameterName(Person) ✔
+      └─ autowiredParameterOfList(List) ✔
+
+Test run finished after 2360 ms
 [        12 containers found      ]
 [         0 containers skipped    ]
 [        12 containers started    ]
@@ -192,6 +242,8 @@ Test run finished after 2542 ms
 [         0 tests aborted         ]
 [        43 tests successful      ]
 [         0 tests failed          ]
+
+BUILD SUCCESSFUL in 6s
 ```
 
 # Running Tests in the IDE
