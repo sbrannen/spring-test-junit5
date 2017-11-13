@@ -50,11 +50,11 @@ the generated artifact will correspond to the following.
 
 If you'd like to build against a release tag for `spring-test-junit5`, you
 may be interested in using [JitPack][]. For example, to build against the
-`1.0.0` tag, the following Maven coordinates will work.
+`1.0.2` tag, the following Maven coordinates will work.
 
  - **Group ID**: `com.github.sbrannen`
  - **Artifact ID**: `spring-test-junit5`
- - **Version**: `1.0.0`
+ - **Version**: `1.0.2`
 
 ### JitPack with Gradle
 
@@ -68,7 +68,7 @@ repositories {
 
 dependencies {
 	// ...
-	testCompile('com.github.sbrannen:spring-test-junit5:1.0.0')
+	testCompile('com.github.sbrannen:spring-test-junit5:1.0.2')
 	// ...
 }
 ```
@@ -89,7 +89,7 @@ dependencies {
 	<dependency>
 		<groupId>com.github.sbrannen</groupId>
 		<artifactId>spring-test-junit5</artifactId>
-		<version>1.0.0</version>
+		<version>1.0.2</version>
 		<scope>test</scope>
 	</dependency>
 
@@ -109,8 +109,8 @@ a cross-platform, self-contained bootstrap mechanism for the build.
 
 - [Git][]
 - [JDK 8][JDK8]: update 121 or later
-- [JUnit 5][]: JUnit Jupiter `5.0.0` and JUnit Platform `1.0.0`
-- [Spring Framework][]: `4.3.11.RELEASE`
+- [JUnit 5][]: JUnit Jupiter `5.0.2` and JUnit Platform `1.0.2`
+- [Spring Framework][]: `4.3.12.RELEASE`
 
 Be sure that your `JAVA_HOME` environment variable points to the `jdk1.8.0` folder
 extracted from the JDK download.
@@ -150,25 +150,25 @@ Test run finished after 2542 ms
 ## Building and Testing with JDK 9
 
 `spring-test-junit5` can be built with and tested against
-[JDK 9 early access builds](http://jdk.java.net/9/) using
-Gradle 4.0.
+[JDK 9.0.1](http://www.oracle.com/technetwork/java/javase/downloads/jdk9-downloads-3848520.html) using
+Gradle 4.3.1.
  
-Assuming we have OpenJDK `jdk-9+176` installed, executing
+Assuming we have JDK 9.0.1 installed, executing
 `gradlew -version && gradlew clean test` will result in
 output similar to the following.
 
 ```
 ------------------------------------------------------------
-Gradle 4.0
+Gradle 4.3.1
 ------------------------------------------------------------
 
-Build time:   2017-06-14 15:11:08 UTC
-Revision:     316546a5fcb4e2dfe1d6aa0b73a4e09e8cecb5a5
+Build time:   2017-11-08 08:59:45 UTC
+Revision:     e4f4804807ef7c2829da51877861ff06e07e006d
 
-Groovy:       2.4.11
+Groovy:       2.4.12
 Ant:          Apache Ant(TM) version 1.9.6 compiled on June 29 2015
-JVM:          9 (Oracle Corporation 9+176)
-OS:           Mac OS X 10.12.5 x86_64
+JVM:          9.0.1 (Oracle Corporation 9.0.1+11)
+OS:           Mac OS X 10.12.6 x86_64
 
 :junitPlatformTest
 
@@ -248,7 +248,7 @@ BUILD SUCCESSFUL in 6s
 
 # Running Tests in the IDE
 
-In order to execute the tests within an IDE, simply run [`SpringExtensionTestSuite`] as a JUnit 4 test class.
+In order to execute all of the tests within an IDE as a single suite, simply run [`SpringExtensionTestSuite`] as a JUnit 4 test class.
 
 ----
 
