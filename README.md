@@ -261,7 +261,7 @@ In order to execute all of the tests within an IDE as a single suite, simply run
 [JUnit 5]: https://github.com/junit-team/junit5
 [SPR-13575]: https://jira.spring.io/browse/SPR-13575
 [Spring Framework]: http://projects.spring.io/spring-framework/
-[Spring TestContext Framework]: http://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/#testcontext-framework
+[Spring TestContext Framework]: https://docs.spring.io/spring/docs/current/spring-framework-reference/testing.html#testcontext-framework
 [`@SpringJUnitJupiterConfig`]: https://github.com/sbrannen/spring-test-junit5/blob/master/src/main/java/org/springframework/test/context/junit/jupiter/SpringJUnitJupiterConfig.java
 [`ComposedSpringExtensionTests`]: https://github.com/sbrannen/spring-test-junit5/blob/master/src/test/java/org/springframework/test/context/junit/jupiter/ComposedSpringExtensionTests.java
 [`SpringExtensionTestSuite`]: https://github.com/sbrannen/spring-test-junit5/blob/master/src/test/java/org/springframework/test/context/junit/jupiter/SpringExtensionTestSuite.java
