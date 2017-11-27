@@ -110,7 +110,7 @@ a cross-platform, self-contained bootstrap mechanism for the build.
 - [Git][]
 - [JDK 8][JDK8]: update 121 or later
 - [JUnit 5][]: JUnit Jupiter `5.0.2` and JUnit Platform `1.0.2`
-- [Spring Framework][]: `4.3.12.RELEASE`
+- [Spring Framework][]: `4.3.13.RELEASE`
 
 Be sure that your `JAVA_HOME` environment variable points to the `jdk1.8.0` folder
 extracted from the JDK download.
