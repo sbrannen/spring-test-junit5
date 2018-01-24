@@ -28,7 +28,7 @@ ext.junitJupiterVersion  = '5.0.3'
 ext.junitPlatformVersion = '1.0.3'
 ext.log4JVersion         = '2.10.0'
 ext.servletApiVersion    = '3.1.0'
-ext.springVersion        = '4.3.13.RELEASE'
+ext.springVersion        = '4.3.14.RELEASE'
 
 repositories {
 	mavenCentral()

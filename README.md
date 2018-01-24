@@ -5,8 +5,8 @@ in the [Spring TestContext Framework][] and has been incorporated into
 [Spring Framework][] 5.0 in conjunction with [SPR-13575][]. Consequently, no
 further work is planned in this repository in terms of new features: new
 features are only supported in Spring Framework 5.0+. Note, however, that this
-project can in fact be used as a _playground_ for basic JUnit 5 support in
-conjunction with Spring Framework 4.3.
+project can in fact be used for JUnit Jupiter testing support in conjunction
+with Spring Framework 4.3.x.
 
 # Using the `SpringExtension`
 
@@ -110,7 +110,7 @@ a cross-platform, self-contained bootstrap mechanism for the build.
 - [Git][]
 - [JDK 8][JDK8]: update 121 or later
 - [JUnit 5][]: JUnit Jupiter `5.0.3` and JUnit Platform `1.0.3`
-- [Spring Framework][]: `4.3.13.RELEASE`
+- [Spring Framework][]: `4.3.14.RELEASE`
 
 Be sure that your `JAVA_HOME` environment variable points to the `jdk1.8.0` folder
 extracted from the JDK download.
