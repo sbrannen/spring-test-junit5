@@ -258,7 +258,7 @@ In order to execute all of the tests within an IDE as a single suite, simply run
 [Gradle]: http://gradle.org
 [JDK8]: http://www.oracle.com/technetwork/java/javase/downloads
 [JitPack]: https://jitpack.io/
-[JUnit 5]: https://github.com/junit-team/junit5
+[JUnit 5]: https://junit.org/junit5/
 [SPR-13575]: https://jira.spring.io/browse/SPR-13575
 [Spring Framework]: http://projects.spring.io/spring-framework/
 [Spring TestContext Framework]: https://docs.spring.io/spring/docs/current/spring-framework-reference/testing.html#testcontext-framework
