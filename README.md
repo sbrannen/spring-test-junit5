@@ -50,11 +50,11 @@ the generated artifact will correspond to the following.
 
 If you'd like to build against a release tag for `spring-test-junit5`, you
 may be interested in using [JitPack][]. For example, to build against the
-`1.0.3` tag, the following Maven coordinates will work.
+`1.2.0` tag, the following Maven coordinates will work.
 
  - **Group ID**: `com.github.sbrannen`
  - **Artifact ID**: `spring-test-junit5`
- - **Version**: `1.0.3`
+ - **Version**: `1.2.0`
 
 ### JitPack with Gradle
 
@@ -68,7 +68,7 @@ repositories {
 
 dependencies {
 	// ...
-	testCompile('com.github.sbrannen:spring-test-junit5:1.0.3')
+	testCompile('com.github.sbrannen:spring-test-junit5:1.2.0')
 	// ...
 }
 ```
@@ -89,7 +89,7 @@ dependencies {
 	<dependency>
 		<groupId>com.github.sbrannen</groupId>
 		<artifactId>spring-test-junit5</artifactId>
-		<version>1.0.3</version>
+		<version>1.2.0</version>
 		<scope>test</scope>
 	</dependency>
 
@@ -109,8 +109,8 @@ a cross-platform, self-contained bootstrap mechanism for the build.
 
 - [Git][]
 - [JDK 8][JDK8]: update 121 or later
-- [JUnit 5][]: JUnit Jupiter `5.0.3` and JUnit Platform `1.0.3`
-- [Spring Framework][]: `4.3.14.RELEASE`
+- [JUnit 5][]: JUnit Jupiter `5.2.0` and JUnit Platform `1.2.0`
+- [Spring Framework][]: `4.3.17.RELEASE`
 
 Be sure that your `JAVA_HOME` environment variable points to the `jdk1.8.0` folder
 extracted from the JDK download.
@@ -151,7 +151,7 @@ Test run finished after 2542 ms
 
 `spring-test-junit5` can be built with and tested against
 [JDK 9.0.1](http://www.oracle.com/technetwork/java/javase/downloads/jdk9-downloads-3848520.html) using
-Gradle 4.3.1.
+Gradle 4.3.1 or higher.
  
 Assuming we have JDK 9.0.1 installed, executing
 `gradlew -version && gradlew clean test` will result in
