@@ -1,18 +1,7 @@
-buildscript {
-	repositories {
-		mavenCentral()
-		// maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-	}
-	dependencies {
-		classpath 'org.junit.platform:junit-platform-gradle-plugin:1.2.0'
-	}
-}
-
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'maven'
-apply plugin: 'org.junit.platform.gradle.plugin'
 
 jar {
 	baseName = 'spring-test-junit5'
@@ -32,27 +21,26 @@ ext.springVersion        = '4.3.17.RELEASE'
 
 repositories {
 	mavenCentral()
-	// maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-	// maven { url 'https://repo.spring.io/libs-snapshot' }
 }
 
 dependencies {
 	compile("org.springframework:spring-context:${springVersion}")
 	compile("org.springframework:spring-test:${springVersion}")
 	compile("org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}")
+
 	testCompile("org.springframework:spring-webmvc:${springVersion}")
 	testCompile("javax.servlet:javax.servlet-api:${servletApiVersion}")
 	testCompile("org.hamcrest:hamcrest-core:${hamcrestVersion}")
 	testCompile("com.jayway.jsonpath:json-path:${jsonpathVersion}")
 	testCompile("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
+	// Enable use of the JUnitPlatform Runner within the IDE
+	testCompile("org.junit.platform:junit-platform-runner:${junitPlatformVersion}")
+
 	testRuntime("org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}")
 	testRuntime("org.apache.logging.log4j:log4j-core:${log4JVersion}")
 	testRuntime("org.apache.logging.log4j:log4j-jul:${log4JVersion}")
 	testRuntime("org.apache.logging.log4j:log4j-jcl:${log4JVersion}")
 	testRuntime("org.apache.logging.log4j:log4j-slf4j-impl:${log4JVersion}")
-
-	// Enable use of the JUnitPlatform Runner within the IDE
-	testCompile("org.junit.platform:junit-platform-runner:${junitPlatformVersion}")
 }
 
 compileJava {
@@ -66,10 +54,9 @@ compileTestJava {
 	options.compilerArgs += '-parameters'
 }
 
-junitPlatform {
-	details 'tree'
-	filters.engines.include 'junit-jupiter' // we only want to run JUnit Jupiter tests...
-	logManager 'org.apache.logging.log4j.jul.LogManager'
+test {
+	useJUnitPlatform()
+	testLogging.events "failed" // , "passed", "skipped", "standardOut", "standardError"
 }
 
 javadoc {
@@ -92,11 +79,6 @@ task javadocJar(type: Jar) {
 artifacts {
 	archives sourcesJar
 	archives javadocJar
-}
-
-configurations.all {
-	// Do NOT cache snapshot JARs for more than 60 seconds.
-	resolutionStrategy.cacheChangingModulesFor 60, 'seconds'
 }
 
 task wrapper(type: Wrapper) {

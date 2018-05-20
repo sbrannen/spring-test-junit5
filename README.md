@@ -117,7 +117,7 @@ extracted from the JDK download.
 
 ## Compile and Test
 
-Build all JARs, distribution ZIP files, and docs:
+Compile code, run tests, and build JARs, distribution ZIP files, and docs:
 
 `./gradlew build`
 
@@ -127,125 +127,12 @@ Build all JARs, distribution ZIP files, and docs:
 
 ## Running Tests with Gradle
 
-Executing `gradlew clean test` from the command line should result in output similar to the following.
+`./gradlew test`
 
-```
-:junitPlatformTest
+## Building and Testing with JDK 9 and JDK 10
 
-Test run finished after 2542 ms
-[        12 containers found      ]
-[         0 containers skipped    ]
-[        12 containers started    ]
-[         0 containers aborted    ]
-[        12 containers successful ]
-[         0 containers failed     ]
-[        43 tests found           ]
-[         0 tests skipped         ]
-[        43 tests started         ]
-[         0 tests aborted         ]
-[        43 tests successful      ]
-[         0 tests failed          ]
-```
-
-## Building and Testing with JDK 9
-
-`spring-test-junit5` can be built with and tested against
-[JDK 9.0.1](http://www.oracle.com/technetwork/java/javase/downloads/jdk9-downloads-3848520.html) using
-Gradle 4.3.1 or higher.
+`spring-test-junit5` can also be built with and tested against JDK 9.0.1 and JDK 10.0.1.
  
-Assuming we have JDK 9.0.1 installed, executing
-`gradlew -version && gradlew clean test` will result in
-output similar to the following.
-
-```
-------------------------------------------------------------
-Gradle 4.3.1
-------------------------------------------------------------
-
-Build time:   2017-11-08 08:59:45 UTC
-Revision:     e4f4804807ef7c2829da51877861ff06e07e006d
-
-Groovy:       2.4.12
-Ant:          Apache Ant(TM) version 1.9.6 compiled on June 29 2015
-JVM:          9.0.1 (Oracle Corporation 9.0.1+11)
-OS:           Mac OS X 10.12.6 x86_64
-
-:junitPlatformTest
-
-╷
-└─ JUnit Jupiter ✔
-   ├─ @SpringJUnitJupiterConfig Tests ✔
-   │  ├─ ApplicationContext injected into method ✔
-   │  └─ Spring @Beans injected into fields ✔
-   ├─ CatInterfaceDefaultMethodsTests ✔
-   │  ├─ autowiredParameterWithParameterizedList(List) ✔
-   │  └─ autowiredParameterWithGenericBean(Character) ✔
-   ├─ DogInterfaceDefaultMethodsTests ✔
-   │  ├─ autowiredParameterWithParameterizedList(List) ✔
-   │  └─ autowiredParameterWithGenericBean(Character) ✔
-   ├─ CatTests ✔
-   │  ├─ autowiredFields() ✔
-   │  └─ autowiredParameterByTypeForSingleGenericBean(Character) ✔
-   ├─ DogTests ✔
-   │  ├─ autowiredFields() ✔
-   │  └─ autowiredParameterByTypeForSingleGenericBean(Character) ✔
-   ├─ SpringExtensionTests ✔
-   │  ├─ autowiredFields() ✔
-   │  ├─ applicationContextInjectedIntoMethod(ApplicationContext) ✔
-   │  ├─ genericApplicationContextInjectedIntoMethod(GenericApplicationContext) ✔
-   │  ├─ autowiredParameterByTypeForSingleBean(Dog) ✔
-   │  ├─ autowiredParameterByTypeForPrimaryBean(Cat) ✔
-   │  ├─ autowiredParameterWithExplicitQualifier(Person) ✔
-   │  ├─ autowiredParameterWithImplicitQualifierBasedOnParameterName(Person) ✔
-   │  ├─ autowiredParameterAsJavaUtilOptional(Optional) ✔
-   │  ├─ autowiredParameterThatDoesNotExistAsJavaUtilOptional(Optional) ✔
-   │  ├─ autowiredParameterThatDoesNotExistButIsNotRequired(Number) ✔
-   │  ├─ autowiredParameterOfList(List) ✔
-   │  ├─ valueParameterWithPrimitiveType(int) ✔
-   │  ├─ valueParameterFromPropertyPlaceholder(Integer) ✔
-   │  ├─ valueParameterFromDefaultValueForPropertyPlaceholder(Boolean) ✔
-   │  ├─ valueParameterFromSpelExpression(String) ✔
-   │  ├─ valueParameterFromSpelExpressionWithNestedPropertyPlaceholder(String) ✔
-   │  └─ junitAndSpringMethodInjectionCombined(Cat, TestInfo, ApplicationContext, TestReporter) ✔
-   ├─ SpringJUnit5AutowiredConstructorInjectionTests ✔
-   │  ├─ applicationContextInjected() ✔
-   │  ├─ propertyPlaceholderInjected() ✔
-   │  └─ beansInjected() ✔
-   ├─ SpringJUnit5ConstructorInjectionTests ✔
-   │  ├─ applicationContextInjected() ✔
-   │  ├─ propertyPlaceholderInjected() ✔
-   │  ├─ testInfoInjected() ✔
-   │  └─ beansInjected() ✔
-   ├─ MultipleWebRequestsSpringExtensionTests ✔
-   │  ├─ getPerson42() ✔
-   │  └─ getPerson99() ✔
-   ├─ Web SpringExtension Tests ✔
-   │  └─ springMvcTest(WebApplicationContext) ✔
-   └─ XmlSpringExtensionTests ✔
-      ├─ autowiredFields() ✔
-      ├─ applicationContextInjectedIntoMethod(ApplicationContext) ✔
-      ├─ genericApplicationContextInjectedIntoMethod(GenericApplicationContext) ✔
-      ├─ autowiredParameterWithExplicitQualifier(Person) ✔
-      ├─ autowiredParameterWithImplicitQualifierBasedOnParameterName(Person) ✔
-      └─ autowiredParameterOfList(List) ✔
-
-Test run finished after 2360 ms
-[        12 containers found      ]
-[         0 containers skipped    ]
-[        12 containers started    ]
-[         0 containers aborted    ]
-[        12 containers successful ]
-[         0 containers failed     ]
-[        43 tests found           ]
-[         0 tests skipped         ]
-[        43 tests started         ]
-[         0 tests aborted         ]
-[        43 tests successful      ]
-[         0 tests failed          ]
-
-BUILD SUCCESSFUL in 6s
-```
-
 # Running Tests in the IDE
 
 In order to execute all of the tests within an IDE as a single suite, simply run [`SpringExtensionTestSuite`] as a JUnit 4 test class.
