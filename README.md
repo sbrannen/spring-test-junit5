@@ -110,7 +110,7 @@ a cross-platform, self-contained bootstrap mechanism for the build.
 - [Git][]
 - [JDK 8][JDK8]: update 121 or later
 - [JUnit 5][]: JUnit Jupiter `5.2.0` and JUnit Platform `1.2.0`
-- [Spring Framework][]: `4.3.17.RELEASE`
+- [Spring Framework][]: `4.3.18.RELEASE`
 
 Be sure that your `JAVA_HOME` environment variable points to the `jdk1.8.0` folder
 extracted from the JDK download.
@@ -129,9 +129,9 @@ Compile code, run tests, and build JARs, distribution ZIP files, and docs:
 
 `./gradlew test`
 
-## Building and Testing with JDK 9 and JDK 10
+## Building and Testing with JDK 9, 10, & 11
 
-`spring-test-junit5` can also be built with and tested against JDK 9.0.1 and JDK 10.0.1.
+`spring-test-junit5` can also be built with and tested against JDK 9.0.4, JDK 10.0.2, and JDK 11 (build 11+28).
  
 # Running Tests in the IDE
 
