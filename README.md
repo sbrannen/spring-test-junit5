@@ -50,11 +50,11 @@ the generated artifact will correspond to the following.
 
 If you'd like to build against a release tag for `spring-test-junit5`, you
 may be interested in using [JitPack][]. For example, to build against the
-`1.3.0` tag, the following Maven coordinates will work.
+`1.3.1` tag, the following Maven coordinates will work.
 
  - **Group ID**: `com.github.sbrannen`
  - **Artifact ID**: `spring-test-junit5`
- - **Version**: `1.3.0`
+ - **Version**: `1.3.1`
 
 ### JitPack with Gradle
 
@@ -68,7 +68,7 @@ repositories {
 
 dependencies {
 	// ...
-	testCompile('com.github.sbrannen:spring-test-junit5:1.3.0')
+	testCompile('com.github.sbrannen:spring-test-junit5:1.3.1')
 	// ...
 }
 ```
@@ -89,7 +89,7 @@ dependencies {
 	<dependency>
 		<groupId>com.github.sbrannen</groupId>
 		<artifactId>spring-test-junit5</artifactId>
-		<version>1.3.0</version>
+		<version>1.3.1</version>
 		<scope>test</scope>
 	</dependency>
 
@@ -109,8 +109,8 @@ a cross-platform, self-contained bootstrap mechanism for the build.
 
 - [Git][]
 - [JDK 8][JDK8]: update 121 or later
-- [JUnit 5][]: JUnit Jupiter `5.3.0` and JUnit Platform `1.3.0`
-- [Spring Framework][]: `4.3.18.RELEASE`
+- [JUnit 5][]: JUnit Jupiter `5.3.1` and JUnit Platform `1.3.1`
+- [Spring Framework][]: `4.3.19.RELEASE`
 
 Be sure that your `JAVA_HOME` environment variable points to the `jdk1.8.0` folder
 extracted from the JDK download.
