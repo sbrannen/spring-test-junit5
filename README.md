@@ -50,11 +50,11 @@ the generated artifact will correspond to the following.
 
 If you'd like to build against a release tag for `spring-test-junit5`, you
 may be interested in using [JitPack][]. For example, to build against the
-`1.3.1` tag, the following Maven coordinates will work.
+`1.3.2` tag, the following Maven coordinates will work.
 
  - **Group ID**: `com.github.sbrannen`
  - **Artifact ID**: `spring-test-junit5`
- - **Version**: `1.3.1`
+ - **Version**: `1.3.2`
 
 ### JitPack with Gradle
 
@@ -68,7 +68,7 @@ repositories {
 
 dependencies {
 	// ...
-	testCompile('com.github.sbrannen:spring-test-junit5:1.3.1')
+	testCompile('com.github.sbrannen:spring-test-junit5:1.3.2')
 	// ...
 }
 ```
@@ -89,7 +89,7 @@ dependencies {
 	<dependency>
 		<groupId>com.github.sbrannen</groupId>
 		<artifactId>spring-test-junit5</artifactId>
-		<version>1.3.1</version>
+		<version>1.3.2</version>
 		<scope>test</scope>
 	</dependency>
 
@@ -97,7 +97,6 @@ dependencies {
 
 </dependencies>
 ```
-
 
 # Building from Source
 
@@ -109,7 +108,7 @@ a cross-platform, self-contained bootstrap mechanism for the build.
 
 - [Git][]
 - [JDK 8][JDK8]: update 121 or later
-- [JUnit 5][]: JUnit Jupiter `5.3.1` and JUnit Platform `1.3.1`
+- [JUnit 5][]: JUnit Jupiter `5.3.2` and JUnit Platform `1.3.2`
 - [Spring Framework][]: `4.3.21.RELEASE`
 
 Be sure that your `JAVA_HOME` environment variable points to the `jdk1.8.0` folder
@@ -131,7 +130,7 @@ Compile code, run tests, and build JARs, distribution ZIP files, and docs:
 
 ## Building and Testing with JDK 9, 10, & 11
 
-`spring-test-junit5` can also be built with and tested against JDK 9.0.4, JDK 10.0.2, and JDK 11 (build 11+28).
+`spring-test-junit5` can also be built with and tested against JDK 9.0.4, JDK 10.0.2, and JDK 11.0.1.
  
 # Running Tests in the IDE
 
