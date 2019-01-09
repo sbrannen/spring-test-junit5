@@ -11,7 +11,7 @@ ext.jsonpathVersion      = '2.4.0'
 ext.junitVersion         = '5.3.2'
 ext.log4JVersion         = '2.11.1'
 ext.servletApiVersion    = '3.1.0'
-ext.springVersion        = '4.3.21.RELEASE'
+ext.springVersion        = '4.3.22.RELEASE'
 
 repositories {
 	mavenCentral()
