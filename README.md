@@ -122,7 +122,7 @@ Compile code, run tests, and build JARs, distribution ZIP files, and docs:
 
 ## Install `spring-test-junit5` in local Maven repository
 
-`./gradlew install`
+`./gradlew publishToMavenLocal`
 
 ## Running Tests with Gradle
 
